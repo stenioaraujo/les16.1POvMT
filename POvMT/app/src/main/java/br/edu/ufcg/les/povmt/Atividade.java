@@ -10,12 +10,15 @@ public class Atividade {
     private String name;
     private String description;
     private float totalTime;
-    private ArrayList<TimeInput> timeInputs = new ArrayList<>();
+    private Enum<Prioridades> priority;
+    private ArrayList<TimeInput> timeInputs;
 
     Atividade(){
         this.name = "Lorem";
         this.description = "Ipsum";
+        timeInputs = new ArrayList<>();
         this.totalTime = totalTime();
+        this.priority = Prioridades.MEDIUM;
     }
 
     private float totalTime() {
