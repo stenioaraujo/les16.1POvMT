@@ -1,4 +1,4 @@
-package br.edu.ufcg.les.povmt;
+package br.edu.ufcg.les.povmt.models;
 
 /**
  * Created by Treinamento Xiaomi on 14/07/2016.

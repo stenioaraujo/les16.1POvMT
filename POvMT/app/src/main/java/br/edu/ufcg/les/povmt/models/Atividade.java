@@ -1,4 +1,4 @@
-package br.edu.ufcg.les.povmt;
+package br.edu.ufcg.les.povmt.models;
 
 import java.util.ArrayList;
 

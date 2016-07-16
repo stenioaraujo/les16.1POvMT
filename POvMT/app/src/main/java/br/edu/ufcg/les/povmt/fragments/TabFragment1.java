@@ -1,4 +1,4 @@
-package br.edu.ufcg.les.povmt;
+package br.edu.ufcg.les.povmt.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import br.edu.ufcg.les.povmt.R;
 
 /**
  * Created by Isaque on 15-Jul-16.
