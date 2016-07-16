@@ -5,4 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="tempo_investido">Tempo Investido</string>
+    <string name="abreviacao_hora">H</string>
+    <string name="abreviacao_minuto">min</string>
 </resources>
