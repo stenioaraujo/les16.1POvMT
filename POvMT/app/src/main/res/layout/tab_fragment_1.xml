@@ -30,12 +30,14 @@
             android:id="@+id/textViewTempoInvestidoH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
             android:text="@string/abreviacao_hora"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
         <TextView
             android:id="@+id/textViewTempoInvestidoMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
             android:text="50"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         <TextView
@@ -52,9 +54,9 @@
         android:layout_height="match_parent"
         android:id="@+id/recycler"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/linearLayout2"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" />
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/button" />
 
     <EditText
         android:layout_width="225dp"
@@ -131,6 +133,15 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/linearLayout2"
+        android:text="@string/filtrar"
+        android:backgroundTint="#2196f3"
+        android:id="@+id/button" />
 
 
 </RelativeLayout>
