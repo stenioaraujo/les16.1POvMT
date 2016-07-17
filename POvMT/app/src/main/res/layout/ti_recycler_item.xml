@@ -8,7 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout"
-        android:layout_marginLeft="5dp">
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -52,15 +53,16 @@
     </LinearLayout>
 
     <FrameLayout
-        android:layout_width="250dp"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
         android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/bt_edit"
         android:layout_toRightOf="@+id/linearLayout"
-        android:layout_marginLeft="15dp">
+        android:layout_marginLeft="5dp">
 
         <FrameLayout
             android:id="@+id/progress"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/progressColor"></FrameLayout>
 
@@ -68,8 +70,8 @@
             android:id="@+id/priority"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:background="@color/priortyHighColor"
-            android:layout_margin="5dp"></FrameLayout>
+            android:layout_margin="5dp"
+            android:background="@color/priortyHighColor"></FrameLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -81,7 +83,8 @@
             android:textColor="@color/progressTextColor"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:layout_marginLeft="10dp" />
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold" />
     </FrameLayout>
 
     <ImageView
@@ -94,6 +97,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginRight="5dp"
-        android:backgroundTint="@color/progressEditColor"/>
+        android:backgroundTint="@color/progressEditColor"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>
