@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "600514318970",
+    "firebase_url": "https://les161povmt.firebaseio.com",
+    "project_id": "les161povmt",
+    "storage_bucket": "les161povmt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600514318970:android:386c4f01716485bd",
+        "android_client_info": {
+          "package_name": "br.edu.ufcg.les.povmt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600514318970-2dv4onej9v0pcvgldjmj1j7ofoo95s48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "25FD099E097B35F9526202221B803884D0C3674F"
+          }
+        },
+        {
+          "client_id": "600514318970-9kgo3vtbn5gitc04sp7deehivcneebsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjjAxEd3I1pHYrzBOQ8D75OcNaFq5XpEY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600514318970-9kgo3vtbn5gitc04sp7deehivcneebsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
