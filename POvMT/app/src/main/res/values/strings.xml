@@ -9,5 +9,11 @@
     <string name="abreviacao_hora">H</string>
     <string name="abreviacao_minuto">min</string>
     <string name="filtrar">Filtrar</string>
+    <string name="trabalho">Trabalho</string>
+    <string name="lazer">Lazer</string>
+    <string name="alta">Alta</string>
+    <string name="media">Média</string>
+    <string name="baixa">Baixa</string>
 	<string name="action_sign_out">Sign Out</string>
+
 </resources>
