@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "600514318970-nba3eklteahbuf94vdrm45ki043l4vig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "0810390B426B9FDCEAE40C2A22A50A861BA7BC84"
+          }
+        },
+        {
           "client_id": "600514318970-k8pqturi89f01b9kj4o29fddahhp7sve.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
