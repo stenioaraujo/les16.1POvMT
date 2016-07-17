@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:layout_marginLeft="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="60%"
+            android:id="@+id/txt_percent"
+            android:textColor="@android:color/black"
+            android:textSize="26sp"
+            android:gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+            <TextView
+                android:id="@+id/txt_h"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="3dp"
+                android:text="5"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/textViewTempoInvestidoH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abreviacao_hora"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+            <TextView
+                android:id="@+id/txt_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/textViewTempoInvestidoM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abreviacao_minuto"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/linearLayout"
+        android:layout_marginLeft="15dp">
+
+        <FrameLayout
+            android:id="@+id/progress"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:background="@color/progressColor"></FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/priority"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@color/priortyHighColor"
+            android:layout_margin="5dp"></FrameLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Les"
+            android:id="@+id/txt_name"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="28sp"
+            android:textColor="@color/progressTextColor"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp" />
+    </FrameLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bt_edit"
+        android:src="@android:drawable/ic_menu_edit"
+        android:layout_gravity="right"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        android:backgroundTint="@color/progressEditColor"/>
+
+</RelativeLayout>

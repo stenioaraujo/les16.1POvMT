@@ -8,16 +8,17 @@
         android:id="@+id/textViewStringTempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="105dp"
         android:layout_centerHorizontal="true"
         android:text="@string/tempo_investido"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginTop="5dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/textViewStringTempo">
+        android:layout_below="@id/textViewStringTempo"
+        android:id="@+id/linearLayout2">
         <TextView
             android:id="@+id/textViewTempoInvestidoHora"
             android:layout_width="wrap_content"
@@ -44,6 +45,92 @@
             android:text="@string/abreviacao_minuto"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:background="@color/priortyHighColor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
+
+    <EditText
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/edtDesc"
+        android:maxLines="2"
+        android:hint="LES"
+        android:layout_alignBottom="@+id/fab"
+        android:layout_alignRight="@+id/textViewStringTempo"
+        android:layout_alignEnd="@+id/textViewStringTempo" />
+
+    <EditText
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/edtH"
+        android:layout_above="@+id/edtDesc"
+        android:layout_alignLeft="@+id/edtDesc"
+        android:layout_alignStart="@+id/edtDesc"
+        android:hint="00"
+        android:maxLength="3"
+        android:gravity="right" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="h"
+        android:id="@+id/textView2"
+        android:layout_alignTop="@+id/edtH"
+        android:layout_toRightOf="@+id/edtH"
+        android:layout_toEndOf="@+id/edtH"
+        android:gravity="bottom"
+        android:textColor="@color/gray"
+        android:layout_alignBottom="@+id/edtH"
+        android:layout_marginBottom="5dp" />
+
+    <EditText
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/edtM"
+        android:layout_above="@+id/edtDesc"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/textView2"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:hint="00"
+        android:maxLength="3"
+        android:gravity="right" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="min"
+        android:id="@+id/textView3"
+        android:gravity="bottom"
+        android:layout_alignBottom="@+id/edtM"
+        android:layout_toRightOf="@+id/edtM"
+        android:layout_toEndOf="@+id/edtM"
+        android:textColor="@color/gray"
+        android:layout_marginBottom="5dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@android:drawable/ic_menu_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/fab_margin" />
 
 
 </RelativeLayout>

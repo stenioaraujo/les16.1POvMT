@@ -4,4 +4,12 @@
     <color name="colorPrimaryDark">#30629f</color>
     <color name="colorAccent">#0ac5f4</color>
     <color name="gray">#858787</color>
+    <color name="progressColor">#e5f2ff</color>
+    <color name="progressTextColor">#8dccff</color>
+    <color name="progressEditColor">#1e4072</color>
+    <color name="priortyHighColor">#fa7470</color>
+    <color name="priortyMediumColor">#f5a44d</color>
+    <color name="priortyLowColor">#7cd175</color>
+    <color name="deleteColor">#b71c1c</color>
+    <color name="saveColor">#2196f3</color>
 </resources>

@@ -10,21 +10,37 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.models.TiView;
 
 /**
  * Created by Victor on 16-Jul-16.
  */
-public class TiRecyclerAdapter  extends RecyclerView.Adapter<TiRecyclerAdapter.ViewHolder> {
+public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.ViewHolder> {
+    private ArrayList<TiView> mDataset;
 
+    public TiRecyclerAdapter(List<TiView> data) {
+        mDataset = (ArrayList<TiView>) data;
+
+    }
 
     @Override
     public TiRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ti_recycler_item, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+        return new ViewHolder(new TiView(parent.getContext()));
     }
 
     @Override
     public void onBindViewHolder(TiRecyclerAdapter.ViewHolder holder, int position) {
+
+        holder.currentTi.getTxtHour().setText(mDataset.get(position).getTxtHour().getText());
+        holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
+        holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
+        holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
 
     }
 
@@ -34,8 +50,12 @@ public class TiRecyclerAdapter  extends RecyclerView.Adapter<TiRecyclerAdapter.V
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        private TiView currentTi;
+
         public ViewHolder(View itemView) {
             super(itemView);
+
+            currentTi = (TiView) itemView;
         }
     }
 }
