@@ -34,6 +34,7 @@ public class TabFragment1 extends Fragment {
 //        mRecycler.setLayoutManager(mLayoutManager);
 //        mAdapter = new TiRecyclerAdapter(new ArrayList<String>());
 //        mRecycler.setAdapter(mAdapter);
+
     }
 
 

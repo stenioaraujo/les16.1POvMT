@@ -5,11 +5,45 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewStringTempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Tab 1"
+        android:layout_marginTop="105dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/tempo_investido"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/textViewStringTempo">
+        <TextView
+            android:id="@+id/textViewTempoInvestidoHora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:text="5"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/textViewTempoInvestidoH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/abreviacao_hora"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+        <TextView
+            android:id="@+id/textViewTempoInvestidoMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/textViewTempoInvestidoM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/abreviacao_minuto"
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
+    </LinearLayout>
+
 
 </RelativeLayout>
