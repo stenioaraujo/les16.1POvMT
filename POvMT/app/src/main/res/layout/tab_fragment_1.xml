@@ -8,12 +8,13 @@
         android:id="@+id/textViewStringTempo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
         android:text="@string/tempo_investido"
         android:textAppearance="?android:attr/textAppearanceLarge"/>
 
     <LinearLayout
+        android:id="@+id/ll_tempo_investido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -29,12 +30,14 @@
             android:id="@+id/textViewTempoInvestidoH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
             android:text="@string/abreviacao_hora"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
         <TextView
             android:id="@+id/textViewTempoInvestidoMin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
             android:text="50"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
         <TextView
@@ -44,6 +47,14 @@
             android:text="@string/abreviacao_minuto"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ll_tempo_investido"
+        android:text="@string/filtrar"
+        android:backgroundTint="#2196f3" />
 
 
 </RelativeLayout>

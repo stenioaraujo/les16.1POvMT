@@ -8,4 +8,5 @@
     <string name="tempo_investido">Tempo Investido</string>
     <string name="abreviacao_hora">H</string>
     <string name="abreviacao_minuto">min</string>
+    <string name="filtrar">Filtrar</string>
 </resources>
