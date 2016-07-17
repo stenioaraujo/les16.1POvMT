@@ -1,4 +1,4 @@
-package br.edu.ufcg.les.povmt;
+package br.edu.ufcg.les.povmt.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +18,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+
+import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.fragments.TabFragment1;
+import br.edu.ufcg.les.povmt.fragments.TabFragment2;
+import br.edu.ufcg.les.povmt.fragments.TabFragment3;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
