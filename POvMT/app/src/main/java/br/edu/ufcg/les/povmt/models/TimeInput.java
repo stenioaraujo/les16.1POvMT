@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class TimeInput {
 
+    private Atividade atividade;
     private Date dataCriacao;
     private float time = 0;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -33,4 +34,7 @@ public class TimeInput {
         return dataCriacao;
     }
 
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
 }
