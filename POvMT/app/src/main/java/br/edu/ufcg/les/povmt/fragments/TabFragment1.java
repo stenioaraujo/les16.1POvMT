@@ -25,7 +25,7 @@ import br.edu.ufcg.les.povmt.models.TiView;
 
 public class TabFragment1 extends Fragment {
     RecyclerView mRecycler;
-    TiRecyclerAdapter mAdapter;
+   public  TiRecyclerAdapter mAdapter;
     View rootView;
 
     @Override
@@ -33,6 +33,20 @@ public class TabFragment1 extends Fragment {
         rootView = inflater.inflate(R.layout.tab_fragment_1, container, false);
 
         ArrayList<TiView> tis = new ArrayList<TiView>();
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
+        tis.add(new TiView(getContext()));
         tis.add(new TiView(getContext()));
         tis.add(new TiView(getContext()));
 //
@@ -43,14 +57,16 @@ public class TabFragment1 extends Fragment {
         mAdapter = new TiRecyclerAdapter(tis);
         mRecycler.setAdapter(mAdapter);
 
-
-
+//
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                TiView ti = new TiView(getContext());
+                ti.set(45,"1","29","Atividade Legal",0);
+                mAdapter.add(mAdapter.getItemCount(),ti);
             }
         });
 

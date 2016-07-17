@@ -3,6 +3,7 @@ package br.edu.ufcg.les.povmt.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
 
     @Override
     public void onBindViewHolder(TiRecyclerAdapter.ViewHolder holder, int position) {
-
         holder.currentTi.getTxtHour().setText(mDataset.get(position).getTxtHour().getText());
         holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
         holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
@@ -46,7 +46,7 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDataset.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,4 +58,18 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
             currentTi = (TiView) itemView;
         }
     }
+
+
+
+    public void add(int position, TiView item) {
+        mDataset.add(position, item);
+        notifyItemInserted(position);
+    }
+
+    public void remove(TiView item) {
+        int position = mDataset.indexOf(item);
+        mDataset.remove(position);
+        notifyItemRemoved(position);
+    }
+
 }
