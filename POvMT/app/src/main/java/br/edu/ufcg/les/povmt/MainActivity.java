@@ -1,6 +1,8 @@
 package br.edu.ufcg.les.povmt;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -8,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,18 +21,41 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
     private EditText edtDesc;
     private EditText edtH;
     private EditText edtM;
+    private ImageView imageViewUser;
+    private TextView textViewUsername;
+    private TextView textViewUseremail;
+
+    private GoogleApiClient mGoogleApiClient;
+
+    // Firebase instance variables
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private String mUsername;
+    private String mPhotoUrl;
+    private String mUseremail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -79,10 +105,55 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         edtDesc = (EditText) findViewById(R.id.edtDesc);
         edtH = (EditText) findViewById(R.id.edtH);
         edtM = (EditText) findViewById(R.id.edtM);
+
+        imageViewUser = (ImageView) navigationView.findViewById(R.id.imageViewUser);
+        textViewUsername = (TextView) navigationView.findViewById(R.id.textViewUserName);
+        textViewUseremail = (TextView) navigationView.findViewById(R.id.textViewUserEmail);
+
+        Log.v("imageViewUser", String.valueOf(imageViewUser));
+        Log.v("textViewUsername", String.valueOf(textViewUsername));
+        Log.v("textViewUseremail", String.valueOf(textViewUseremail));
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+
+        verifyIfLoggedIn();
+    }
+
+    private void verifyIfLoggedIn() {
+        //Initialize Firebase Auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser == null) {
+            // Not signed in, launch sign in activity
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        } else {
+            mUsername = mFirebaseUser.getDisplayName();
+            mUseremail = mFirebaseUser.getEmail();
+
+            if (mFirebaseUser.getPhotoUrl() != null) {
+                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+            }
+
+            //setUserInfo();
+        }
+    }
+
+    private void setUserInfo() {
+        textViewUsername.setText(mUsername);
+        textViewUseremail.setText(mUseremail);
+
+        Glide.with(MainActivity.this)
+                .load(mPhotoUrl)
+                .into(imageViewUser);
     }
 
     @Override
@@ -109,12 +180,17 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_sign_out:
+                mFirebaseAuth.signOut();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                startActivity(new Intent(this, SignInActivity.class));
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -140,6 +216,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     public class PagerAdapter extends FragmentStatePagerAdapter {
