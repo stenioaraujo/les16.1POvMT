@@ -109,13 +109,10 @@ public class MainActivity extends AppCompatActivity
         edtH = (EditText) findViewById(R.id.edtH);
         edtM = (EditText) findViewById(R.id.edtM);
 
-        imageViewUser = (ImageView) navigationView.findViewById(R.id.imageViewUser);
-        textViewUsername = (TextView) navigationView.findViewById(R.id.textViewUserName);
-        textViewUseremail = (TextView) navigationView.findViewById(R.id.textViewUserEmail);
-
-        Log.v("imageViewUser", String.valueOf(imageViewUser));
-        Log.v("textViewUsername", String.valueOf(textViewUsername));
-        Log.v("textViewUseremail", String.valueOf(textViewUseremail));
+        View header = navigationView.getHeaderView(0);
+        imageViewUser = (ImageView) header.findViewById(R.id.imageViewUser);
+        textViewUsername = (TextView) header.findViewById(R.id.textViewUserName);
+        textViewUseremail = (TextView) header.findViewById(R.id.textViewUserEmail);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
@@ -143,7 +140,7 @@ public class MainActivity extends AppCompatActivity
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
 
-            //setUserInfo();
+            setUserInfo();
         }
     }
 
