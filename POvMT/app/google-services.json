@@ -1,0 +1,95 @@
+{
+  "project_info": {
+    "project_number": "600514318970",
+    "firebase_url": "https://les161povmt.firebaseio.com",
+    "project_id": "les161povmt",
+    "storage_bucket": "les161povmt.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600514318970:android:386c4f01716485bd",
+        "android_client_info": {
+          "package_name": "br.edu.ufcg.les.povmt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600514318970-ara28jtv7b599edl6mmnp56ntghk3g4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "F5E9545D04F53FADC93663DEDDCF0A853AF54349"
+          }
+        },
+        {
+          "client_id": "600514318970-nba3eklteahbuf94vdrm45ki043l4vig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "0810390B426B9FDCEAE40C2A22A50A861BA7BC84"
+          }
+        },
+        {
+          "client_id": "600514318970-k8pqturi89f01b9kj4o29fddahhp7sve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "FB05E1191EF63F71F9D08C4821E934F67E48292B"
+          }
+        },
+        {
+          "client_id": "600514318970-elrqpes03ug5i8gs3rvm18avejnd884f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "92FF147DA257EBE2038608C11FCC26288B868A50"
+          }
+        },
+        {
+          "client_id": "600514318970-4n5ehgl3dm1u0jmihcokhpm4mgj4btd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "C2727E028C4F78BF01E0DBB0E892B9F7A9521D81"
+          }
+        },
+        {
+          "client_id": "600514318970-2dv4onej9v0pcvgldjmj1j7ofoo95s48.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "25FD099E097B35F9526202221B803884D0C3674F"
+          }
+        },
+        {
+          "client_id": "600514318970-9kgo3vtbn5gitc04sp7deehivcneebsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjjAxEd3I1pHYrzBOQ8D75OcNaFq5XpEY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600514318970-9kgo3vtbn5gitc04sp7deehivcneebsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
