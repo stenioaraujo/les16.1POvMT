@@ -11,11 +11,15 @@ public class TimeInput {
 
     private Date dataCriacao;
     private float time = 0;
+    private Atividade atvPai;
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
-    public TimeInput(float timeInput){
+
+
+    public TimeInput(float timeInput, Atividade atv){
         this.dataCriacao = new Date();
         this.time = timeInput;
+        this.atvPai = atv;
     }
 
 
@@ -30,6 +34,17 @@ public class TimeInput {
     }
     public Date getDataCriacao() {
         return dataCriacao;
+
+    public float getTime() { return time;  }
+
+    public Date getDataCriacao() { return dataCriacao; }
+
+    public void setDataCriacao(Date dataCriacao) {
+        this.dataCriacao = dataCriacao;
+
     }
 
+    public void setTime(float time) {
+        this.time = time;
+    }
 }
