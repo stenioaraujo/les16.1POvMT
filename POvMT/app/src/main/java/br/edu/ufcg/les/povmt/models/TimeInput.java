@@ -28,7 +28,6 @@ public class TimeInput {
     public float getTime() {
         return time;
     }
-
     public Date getDataCriacao() {
         return dataCriacao;
     }

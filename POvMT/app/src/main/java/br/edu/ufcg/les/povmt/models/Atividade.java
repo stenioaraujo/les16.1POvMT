@@ -13,7 +13,7 @@ public class Atividade {
     private Enum<Prioridades> priority;
     private ArrayList<TimeInput> timeInputs;
 
-    Atividade(){
+    public Atividade(){
         this.name = "Lorem";
         this.description = "Ipsum";
         timeInputs = new ArrayList<>();
