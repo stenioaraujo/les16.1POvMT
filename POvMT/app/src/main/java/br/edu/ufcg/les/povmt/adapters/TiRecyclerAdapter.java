@@ -25,14 +25,13 @@ import br.edu.ufcg.les.povmt.models.TiView;
  * Created by Victor on 16-Jul-16.
  */
 public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.ViewHolder> {
-    private ArrayList<TiView> mDataset;
+    private List<TiView> mDataset;
     private TabFragment1 owner;
 
     public TiRecyclerAdapter(List<TiView> data, TabFragment1 owner) {
-        mDataset = (ArrayList<TiView>) data;
+        mDataset = (List<TiView>) data;
         this.owner = owner;
         calcPercentage();
-
     }
 
     @Override
@@ -145,6 +144,9 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
             totalMin += ti.getTimeToMin();
         }
         for (TiView ti: mDataset) {
+            Log.v("AAAAAAAAAA-----", String.valueOf(((ti.getTimeToMin()*100)/totalMin)));
+            if (totalMin == 0) break;
+
             ti.setPercent(((ti.getTimeToMin()*100)/totalMin));
             ti.getTxtPercent().setText(ti.getPercent()+"");
         }

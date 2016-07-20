@@ -56,5 +56,11 @@ public class Atividade {
     }
 
     @Override
-    public boolean equals(Object o) { return this.getName().equals(o); }
+    public boolean equals(Object o) {
+        if (o == null || !o.getClass().equals(this.getClass()))
+            return false;
+
+        Atividade atv2 = (Atividade) o;
+        return this.getName().equals(atv2.getName());
+    }
 }

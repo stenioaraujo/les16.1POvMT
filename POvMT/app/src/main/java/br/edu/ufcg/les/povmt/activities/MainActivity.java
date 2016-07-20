@@ -120,11 +120,11 @@ public class MainActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
-        //verifyIfLoggedIn();
-        //setUserInfo();
+        verifyIfLoggedIn();
+        setUserInfo();
 
-        this.dao = new DAO();
-//        fill();
+        this.dao = DAO.getInstance();
+        fill();
     }
 
     private void verifyIfLoggedIn() {
@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity
 
     private void fill() {
         Atividade atv = new Atividade();
+        atv.setName("Stenio");
         TimeInput ti = new TimeInput(20, atv);
 
         dao.add(atv);
