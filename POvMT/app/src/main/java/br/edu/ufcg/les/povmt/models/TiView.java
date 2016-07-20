@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import br.edu.ufcg.les.povmt.R;
 
 /**
@@ -26,17 +28,25 @@ public class TiView extends RelativeLayout {
     private FrameLayout priority;
     private int percent;
     private int priorityId;
+    private List<TimeInput> timeInputs;
+    private Atividade atividade;
 
     public TiView(Context context) {
         super(context, null);
         init(context);
     }
+
     public TiView(Context context, String hour, String min, String name, int priority) {
         super(context, null);
         init(context);
         set(hour,min,name,priority);
     }
 
+    public TiView(Context context, String hour, String min, Atividade atividade, List<TimeInput> timeInputs) {
+        super(context, null);
+        init(context);
+        set(hour, min, atividade, timeInputs);
+    }
 
     public TiView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -47,7 +57,6 @@ public class TiView extends RelativeLayout {
         super(context, attrs, defStyleAttr);
         init(context);
     }
-
 
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -70,8 +79,13 @@ public class TiView extends RelativeLayout {
         txtName.setText(name);
         //this.percent = percent;
         priorityId = priority;
+    }
 
-
+    public void set(String hour, String min, Atividade atv, List<TimeInput> timeInputs) {
+        txtHour.setText(hour);
+        txtMin.setText(min);
+        txtName.setText(atv.getName());
+        priorityId = atv.getPriority();
     }
 
     @Override
@@ -88,10 +102,6 @@ public class TiView extends RelativeLayout {
     @Override
     public void onWindowFocusChanged(boolean hasWindowFocus) {
         super.onWindowFocusChanged(hasWindowFocus);
-
-
-
-
     }
 
     public TextView getTxtPercent() {
@@ -168,7 +178,7 @@ public class TiView extends RelativeLayout {
 
     public int getTimeToMin(){
         try {
-            return Integer.parseInt(txtHour.getText() + "") + Integer.parseInt(txtMin.getText() + "") / 60;
+            return Integer.parseInt(txtHour.getText() + "")*60 + Integer.parseInt(txtMin.getText() + "");
         }catch(NumberFormatException e){
             return 0;
         }

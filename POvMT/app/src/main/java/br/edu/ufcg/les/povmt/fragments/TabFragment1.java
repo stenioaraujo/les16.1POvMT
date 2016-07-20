@@ -15,11 +15,13 @@ import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.adapters.TiRecyclerAdapter;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
 
@@ -35,23 +37,27 @@ public class TabFragment1 extends Fragment {
     private EditText edtDesc;
     private EditText edtH;
     private EditText edtM;
+    private DAO dao;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.tab_fragment_1, container, false);
-
 
         edtDesc = (EditText) rootView.findViewById(R.id.edtDesc);
         edtH = (EditText) rootView.findViewById(R.id.edtH);
         edtM = (EditText) rootView.findViewById(R.id.edtM);
 
         atividade = new Atividade();
+        /**
         ArrayList<TiView> tis = new ArrayList<TiView>();
         tis.add(new TiView(getContext(), "6", "29", "Les", 2));
         tis.add(new TiView(getContext(), "4", "30", "Empsoft", 1));
         tis.add(new TiView(getContext(), "3", "54", "So", 0));
         tis.add(new TiView(getContext(), "2", "10", "Irc", 0));
         tis.add(new TiView(getContext(), "10", "45", "Festar", 2));
+         **/
+        dao = DAO.getInstance();
+        List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         // use a linear layout manager
@@ -71,7 +77,6 @@ public class TabFragment1 extends Fragment {
 
 
         return rootView;
-
     }
 
     public void showEditDialog() {

@@ -1,5 +1,6 @@
 package br.edu.ufcg.les.povmt.datahandlers;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
+import br.edu.ufcg.les.povmt.models.TiView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 import br.edu.ufcg.les.povmt.models.UserData;
 
@@ -28,6 +30,7 @@ public class DAO {
     private FirebaseUser mFirebaseUser;
     private String uid;
     private ValueEventListener listener;
+    private static DAO dao;
 
     public DAO() {
         initialize();
@@ -44,6 +47,13 @@ public class DAO {
         userData = new UserData(mFirebaseUser.getUid());
         userData.setLastLogin(new Date());
         userData.setNome(mFirebaseUser.getDisplayName());
+    }
+
+    public static DAO getInstance() {
+        if (dao == null)
+            dao = new DAO();
+
+        return dao;
     }
 
     private ValueEventListener addListenerFirebase() {
@@ -95,5 +105,55 @@ public class DAO {
         }
 
         return null;
+    }
+
+    public List<TimeInput> getTimeInputs(Date start, Date end, Atividade atv) {
+        List<TimeInput> timeInputs = new ArrayList<>();
+
+        StringBuffer bf = new StringBuffer();
+        for (TimeInput ti: userData.getTimeInputs()) {
+            Date criado = ti.getDataCriacao();
+            if (ti.getAtvPai().equals(atv)) {
+                bf.append(atv.getName() + "\n");
+                if (criado.after(start) && criado.before(end) ||
+                        criado.equals(start) || criado.equals(end)) {
+                    timeInputs.add(ti);
+                }
+            }
+        }
+
+        return timeInputs;
+    }
+
+    public List<TiView> getTiViews(Context context, Date start, Date end) {
+        List<TiView> tiViews = new ArrayList<>();
+        List<Atividade> atividades = userData.getAtividades();
+
+        for (Atividade atv: atividades) {
+            List<TimeInput> timeInputs = getTimeInputs(start, end, atv);
+            Long minutes = getTotalMinutes(timeInputs);
+
+            String hours = getHours(minutes).toString();
+            String min = String.valueOf((minutes - getHours(minutes)));
+
+            TiView tiView = new TiView(context, hours, min, atv, timeInputs);
+            tiViews.add(tiView);
+        }
+
+        return tiViews;
+    }
+
+    public Long getTotalMinutes(List<TimeInput> timeInputs) {
+        Long totalMinutes = 0L;
+
+        for (TimeInput ti: timeInputs) {
+            totalMinutes += ti.getTime();
+        }
+
+        return totalMinutes;
+    }
+
+    public Long getHours(Long minutes) {
+        return minutes/60;
     }
 }
