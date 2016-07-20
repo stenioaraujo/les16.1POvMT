@@ -29,6 +29,7 @@ public class TimeInput implements Comparable<TimeInput> {
         return "Time input com duração de " + Float.toString(time) + " horas, criado em: " + dateFormat.format(dataCriacao); //2014/08/06 15:59:48;
     }
 
+    //Getters and Setters
     public Date getDataCriacao() { return dataCriacao; }
 
     public long getTime() { return time;  }

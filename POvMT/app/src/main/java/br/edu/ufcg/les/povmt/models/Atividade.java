@@ -12,14 +12,15 @@ public class Atividade {
 
     private String name;
     private String description;
-    private float totalTime;
     private int priority;
+    private float totalTime;
 
     public Atividade(){
         this.name = "Lorem";
         this.description = "Ipsum";
         this.priority = Prioridades.MEDIUM;
     }
+
 
     //Getters and Setters
     public float getTotalTime() {

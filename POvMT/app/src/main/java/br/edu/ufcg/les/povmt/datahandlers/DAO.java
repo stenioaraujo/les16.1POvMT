@@ -20,7 +20,7 @@ import br.edu.ufcg.les.povmt.models.TimeInput;
 import br.edu.ufcg.les.povmt.models.UserData;
 
 /**
- * Created by stenio on 7/20/2016.
+ * Created by stenio e kallynnykarlla on 7/20/2016.
  */
 public class DAO {
     private DatabaseReference firebaseRef;
