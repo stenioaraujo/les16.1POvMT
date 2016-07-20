@@ -34,10 +34,7 @@ public class TimeInput {
     }
     public Date getDataCriacao() {
         return dataCriacao;
-
-    public float getTime() { return time;  }
-
-    public Date getDataCriacao() { return dataCriacao; }
+    }
 
     public void setDataCriacao(Date dataCriacao) {
         this.dataCriacao = dataCriacao;
