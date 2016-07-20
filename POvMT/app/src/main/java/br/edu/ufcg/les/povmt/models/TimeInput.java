@@ -31,9 +31,8 @@ public class TimeInput implements Comparable<TimeInput> {
 
     public Date getDataCriacao() { return dataCriacao; }
 
-    //Getters and Setters
-
     public long getTime() { return time;  }
+
 
     public Atividade getAtvPai() { return atvPai; }
 
