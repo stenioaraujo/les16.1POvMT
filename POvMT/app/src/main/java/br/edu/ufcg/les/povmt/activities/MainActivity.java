@@ -3,8 +3,6 @@ package br.edu.ufcg.les.povmt.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +21,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
@@ -31,19 +28,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
-import br.edu.ufcg.les.povmt.models.Usuario;
+import br.edu.ufcg.les.povmt.models.Atividade;
+import br.edu.ufcg.les.povmt.models.TimeInput;
+import br.edu.ufcg.les.povmt.models.UserData;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
 
     private Date lastLogin;
-    private Usuario usuario
+    private UserData usuario
             ;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -66,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     private String mUsername;
     private String mPhotoUrl;
     private String mUseremail;
-    private String mUserUid;
+    private DAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +101,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -130,6 +125,10 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         verifyIfLoggedIn();
+        setUserInfo();
+
+        this.dao = new DAO();
+        fill();
     }
 
     private void verifyIfLoggedIn() {
@@ -145,28 +144,21 @@ public class MainActivity extends AppCompatActivity
         } else {
             mUsername = mFirebaseUser.getDisplayName();
             mUseremail = mFirebaseUser.getEmail();
-            mUserUid = mFirebaseUser.getUid();
-            lastLogin = new Date();
 
             if (mFirebaseUser.getPhotoUrl() != null) {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
 
-            setUpFirebase();
             setUserInfo();
         }
     }
 
-    private void setUpFirebase() {
-        //Se nenhum usuario existir, vai criar esse.
-        usuario = new Usuario(mUserUid);
-        usuario.setLastLogin(lastLogin);
-        usuario.setNome(mUsername);
+    private void fill() {
+        Atividade atv = new Atividade();
+        TimeInput ti = new TimeInput(20, atv);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userDB = ref.child("users").child(usuario.getUid());
-
-        userDB.setValue(usuario);
+        dao.add(atv);
+        dao.add(ti);
     }
 
     private void setUserInfo() {
