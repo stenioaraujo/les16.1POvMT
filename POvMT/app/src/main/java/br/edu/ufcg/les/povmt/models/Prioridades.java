@@ -3,13 +3,21 @@ package br.edu.ufcg.les.povmt.models;
 /**
  * Created by Treinamento Xiaomi on 14/07/2016.
  */
-public enum Prioridades {
-    LOW (1), MEDIUM(2), HIGH(3);
+public class Prioridades {
+    public static final int LOW = 1;
+    public static final int MEDIUM = 1;
+    public static final int HIGH = 1;
 
+    private Prioridades() {}
 
-    public int value;
+    public static String getPrioridade(int priority) {
+        String prio = "HIGH";
 
-    Prioridades(int value){
-        this.value = value;
+        switch (priority) {
+            case 1: prio = "LOW"; break;
+            case 2: prio = "MEDIUM"; break;
+        }
+
+        return prio;
     }
 }

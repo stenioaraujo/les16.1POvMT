@@ -3,8 +3,6 @@ package br.edu.ufcg.les.povmt.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -31,11 +28,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
+import br.edu.ufcg.les.povmt.models.Atividade;
+import br.edu.ufcg.les.povmt.models.TimeInput;
+import br.edu.ufcg.les.povmt.models.UserData;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -49,12 +54,16 @@ public class MainActivity extends AppCompatActivity
 
     private GoogleApiClient mGoogleApiClient;
 
+    private Date lastLogin;
+    private UserData usuario
+            ;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private String mUsername;
     private String mPhotoUrl;
     private String mUseremail;
+    private DAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,8 +101,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -118,6 +125,10 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         verifyIfLoggedIn();
+        setUserInfo();
+
+        this.dao = new DAO();
+        fill();
     }
 
     private void verifyIfLoggedIn() {
@@ -140,6 +151,14 @@ public class MainActivity extends AppCompatActivity
 
             setUserInfo();
         }
+    }
+
+    private void fill() {
+        Atividade atv = new Atividade();
+        TimeInput ti = new TimeInput(20, atv);
+
+        dao.add(atv);
+        dao.add(ti);
     }
 
     private void setUserInfo() {
