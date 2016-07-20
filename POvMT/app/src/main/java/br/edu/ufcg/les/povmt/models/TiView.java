@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -20,13 +21,20 @@ public class TiView extends RelativeLayout {
     private TextView txtHour;
     private TextView txtMin;
     private TextView txtName;
-    private View progress;
+    private FrameLayout progress;
     private View btEdit;
     private FrameLayout priority;
+    private int percent;
+    private int priorityId;
 
     public TiView(Context context) {
         super(context, null);
         init(context);
+    }
+    public TiView(Context context, String hour, String min, String name, int priority) {
+        super(context, null);
+        init(context);
+        set(hour,min,name,priority);
     }
 
 
@@ -50,31 +58,39 @@ public class TiView extends RelativeLayout {
         txtHour = (TextView) root.findViewById(R.id.txt_h);
         txtMin = (TextView) root.findViewById(R.id.txt_min);
         txtName = (TextView) root.findViewById(R.id.txt_name);
-        progress = root.findViewById(R.id.progress);
+        progress = (FrameLayout) root.findViewById(R.id.progress);
         btEdit = root.findViewById(R.id.bt_edit);
         priority = (FrameLayout) root.findViewById(R.id.priority);
     }
 
-    public void set(int percent,String hour,String min,String name,int priority){
-        txtPercent.setText(percent+"");
+    public void set( String hour, String min, String name, int priority) {
+        //txtPercent.setText(percent + "");
         txtHour.setText(hour);
         txtMin.setText(min);
         txtName.setText(name);
-        switch (priority){
-            case 0:
-                this.priority.setBackgroundColor(getResources().getColor(R.color.priortyLowColor));
-                break;
-            case 1:
-                this.priority.setBackgroundColor(getResources().getColor(R.color.priortyMediumColor));
-                break;
-            case 2:
-                this.priority.setBackgroundColor(getResources().getColor(R.color.priortyHighColor));
-                break;
+        //this.percent = percent;
+        priorityId = priority;
 
-        }
 
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams((int) (progress.getLayoutParams().width*percent/100.0f), progress.getLayoutParams().height);
-        progress.setLayoutParams(lp);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        ViewGroup.LayoutParams lp = progress.getLayoutParams();
+//        lp.width = (int) (progress.getWidth() * percent / 100.0f);
+//        Log.d("tivew", progress.getWidth()+" --- "+lp.width + " --- "+ percent );
+//        progress.setLayoutParams(lp);
+//        progress.invalidate();
+//        progress.requestLayout();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasWindowFocus) {
+        super.onWindowFocusChanged(hasWindowFocus);
+
+
+
 
     }
 
@@ -94,7 +110,7 @@ public class TiView extends RelativeLayout {
         return txtName;
     }
 
-    public View getProgress() {
+    public FrameLayout getProgress() {
         return progress;
     }
 
@@ -104,5 +120,53 @@ public class TiView extends RelativeLayout {
 
     public View getPriority() {
         return priority;
+    }
+
+    public int getPercent() {
+        return percent;
+    }
+
+    public void setTxtPercent(TextView txtPercent) {
+        this.txtPercent = txtPercent;
+    }
+
+    public void setTxtHour(TextView txtHour) {
+        this.txtHour = txtHour;
+    }
+
+    public void setTxtMin(TextView txtMin) {
+        this.txtMin = txtMin;
+    }
+
+    public void setTxtName(TextView txtName) {
+        this.txtName = txtName;
+    }
+
+    public void setProgress(FrameLayout progress) {
+        this.progress = progress;
+    }
+
+    public void setBtEdit(View btEdit) {
+        this.btEdit = btEdit;
+    }
+
+    public void setPriority(FrameLayout priority) {
+        this.priority = priority;
+    }
+
+    public void setPercent(int percent) {
+        this.percent = percent;
+    }
+
+    public int getPriorityId() {
+        return priorityId;
+    }
+
+    public void setPriorityId(int priorityId) {
+        this.priorityId = priorityId;
+    }
+
+    public int getTimeToMin(){
+        return Integer.parseInt(txtHour.getText()+"")+Integer.parseInt(txtMin.getText()+"")/60;
     }
 }

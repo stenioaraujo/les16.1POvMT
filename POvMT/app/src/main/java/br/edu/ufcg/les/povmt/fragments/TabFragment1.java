@@ -33,23 +33,12 @@ public class TabFragment1 extends Fragment {
         rootView = inflater.inflate(R.layout.tab_fragment_1, container, false);
 
         ArrayList<TiView> tis = new ArrayList<TiView>();
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-        tis.add(new TiView(getContext()));
-//
+        tis.add(new TiView(getContext(),"6","29","Les",2));
+        tis.add(new TiView(getContext(),"4","30","Empsoft",1));
+        tis.add(new TiView(getContext(),"3","54","So",0));
+        tis.add(new TiView(getContext(),"2","10","Irc",0));
+        tis.add(new TiView(getContext(),"10","45","Festar",2));
+
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -62,10 +51,8 @@ public class TabFragment1 extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 TiView ti = new TiView(getContext());
-                ti.set(45,"1","29","Atividade Legal",0);
+                ti.set("1","29","Atividade Legal",1);
                 mAdapter.add(mAdapter.getItemCount(),ti);
             }
         });
