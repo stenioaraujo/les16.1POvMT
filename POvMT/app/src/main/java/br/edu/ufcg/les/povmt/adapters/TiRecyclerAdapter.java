@@ -14,11 +14,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.activities.MainActivity;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
+import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
 
 /**
@@ -29,7 +32,9 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
     private TabFragment1 owner;
 
     public TiRecyclerAdapter(List<TiView> data, TabFragment1 owner) {
-        mDataset = (List<TiView>) data;
+        mDataset = data;
+        Collections.sort(data);
+
         this.owner = owner;
         calcPercentage();
     }
@@ -49,8 +54,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
-
-
 
         holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +76,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
                 break;
 
         }
-
 
         ViewGroup.LayoutParams lp = holder.currentTi.getProgress().getLayoutParams();
         ViewGroup.LayoutParams lp2 = mDataset.get(position).getProgress().getLayoutParams();
@@ -99,13 +101,39 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         }
     }
 
+    public int getPosTiView(String atvName) {
+        for (int i = 0; i < mDataset.size(); i++) {
+            String txtName = mDataset.get(i).getTxtName().getText() + "";
+            if (txtName.equals(atvName))
+                return i;
+        }
+
+        return -1;
+    }
+
+    public void add(TiView item) {
+        int pos = getPosTiView(item.getTxtName().getText() + "");
+
+        if (pos == -1) {
+            add(mDataset.size(), item);
+        } else {
+            TiView tiv = mDataset.get(pos);
+            tiv.increment((long) item.getTimeToMin());
+            update(pos);
+        }
+    }
 
     public void add(int position, TiView item) {
         mDataset.add(position, item);
+        update(position);
+    }
+
+    public void update(int position) {
+        Collections.sort(mDataset);
+
         calcPercentage();
         notifyItemInserted(position);
         notifyDataSetChanged();
-
     }
 
 
@@ -127,9 +155,7 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         holder.currentTi.setPercent(0);
         holder.currentTi.setPriorityId(0);
 
-
         holder.currentTi.getPriority().setBackgroundColor(holder.itemView.getResources().getColor(R.color.priortyLowColor));
-
 
         ViewGroup.LayoutParams lp = holder.currentTi.getProgress().getLayoutParams();
         lp.width = 0;
@@ -144,7 +170,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
             totalMin += ti.getTimeToMin();
         }
         for (TiView ti: mDataset) {
-            Log.v("AAAAAAAAAA-----", String.valueOf(((ti.getTimeToMin()*100)/totalMin)));
             if (totalMin == 0) break;
 
             ti.setPercent(((ti.getTimeToMin()*100)/totalMin));

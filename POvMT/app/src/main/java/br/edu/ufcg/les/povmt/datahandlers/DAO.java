@@ -80,7 +80,6 @@ public class DAO {
 
         if (!atividades.contains(atividade)) {
             atividades.add(atividade);
-            firebaseRef.setValue(userData);
         }
     }
 
@@ -89,7 +88,6 @@ public class DAO {
 
         if (!timeInputs.contains(ti)) {
             timeInputs.add(ti);
-            firebaseRef.setValue(userData);
         }
     }
 
@@ -143,7 +141,7 @@ public class DAO {
         return tiViews;
     }
 
-    public Long getTotalMinutes(List<TimeInput> timeInputs) {
+    public static Long getTotalMinutes(List<TimeInput> timeInputs) {
         Long totalMinutes = 0L;
 
         for (TimeInput ti: timeInputs) {
@@ -153,7 +151,11 @@ public class DAO {
         return totalMinutes;
     }
 
-    public Long getHours(Long minutes) {
+    public static Long getHours(Long minutes) {
         return minutes/60;
+    }
+
+    public void update() {
+        firebaseRef.setValue(userData);
     }
 }

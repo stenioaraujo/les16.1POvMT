@@ -24,6 +24,7 @@ import br.edu.ufcg.les.povmt.adapters.TiRecyclerAdapter;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
+import br.edu.ufcg.les.povmt.models.TimeInput;
 
 /**
  * Created by Isaque on 15-Jul-16.
@@ -97,7 +98,23 @@ public class TabFragment1 extends Fragment {
         if (h.equals("")) h = "0";
         if (m.equals("")) m = "0";
         ti.set(h, m, edtDesc.getText().toString(), priority);
-        mAdapter.add(mAdapter.getItemCount(), ti);
+
+        Atividade atv = dao.getAtividade(ti.getTxtName().getText() + "");
+        if (atv == null) {
+            atv = new Atividade();
+            atv.setName(ti.getTxtName().getText() + "");
+            atv.setPriority(ti.getPriorityId());
+        }
+
+        Long hora = Long.parseLong(h);
+        Long min = Long.parseLong(m);
+        TimeInput timeInput = new TimeInput(hora*60 + min, atv);
+
+        dao.add(atv);
+        dao.add(timeInput);
+        dao.update();
+
+        mAdapter.add(ti);
     }
 
 

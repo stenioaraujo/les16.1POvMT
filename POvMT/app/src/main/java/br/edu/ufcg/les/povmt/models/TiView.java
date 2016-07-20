@@ -14,11 +14,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 
 /**
  * Created by Victor on 16-Jul-16.
  */
-public class TiView extends RelativeLayout {
+public class TiView extends RelativeLayout implements Comparable<TiView> {
     private TextView txtPercent;
     private TextView txtHour;
     private TextView txtMin;
@@ -182,5 +183,18 @@ public class TiView extends RelativeLayout {
         }catch(NumberFormatException e){
             return 0;
         }
+    }
+
+    public void increment(Long minutes) {
+        Long min = getTimeToMin() + minutes;
+        Long hours = DAO.getHours(min);
+
+        txtHour.setText(String.valueOf(hours));
+        txtMin.setText(String.valueOf(min - hours*60));
+    }
+
+    @Override
+    public int compareTo(TiView another) {
+        return -1 * (this.getTimeToMin() - another.getTimeToMin());
     }
 }
