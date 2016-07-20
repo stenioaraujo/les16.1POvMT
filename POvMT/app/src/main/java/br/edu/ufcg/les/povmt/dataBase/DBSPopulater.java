@@ -2,9 +2,9 @@ package br.edu.ufcg.les.povmt.database;
 
 import android.content.Context;
 
-import com.bumptech.glide.util.Util;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import br.edu.ufcg.les.povmt.models.Atividade;
 
 /**
  * Created by kallynnykarlla on 19/07/16.
@@ -30,20 +30,20 @@ public class DBSPopulater {
      * Populate bd.
      */
     public static void populateBD() {
-        long keyAtividade1 = mDb.addAtividade(Atividade1);
+        long keyAtividade1 = mDb.addAtividade(Atividade);
 
-        Task task1 = new Task(keyAtividade1, "Task1", "Task4 description", 12, "priority","[2,4,5]");
+        Atividade task1 = new Atividade(keyAtividade1, "Task1", "Task1 description", 100, 1);
 
-        Task task2 = new Task(keyAtividade1, "Task2", "Task4 description", 12, "priority","[2,4,5]");
+        Atividade task2 = new Atividade(keyAtividade1, "Task2", "Task2 description", 12, 2);
 
-        Task task3 = new Task(keyAtividade1, "Task3", "Task4 description", 12, "priority","[2,3,4,5]");
+        Atividade task3 = new Atividade(keyAtividade1, "Task3", "Task3 description", 20, 3);
 
-        Task task4 = new Task(keyAtividade1, "Task4", "Task4 description", 12, "priority","[2,4,5]");
+        Atividade task4 = new Atividade(keyAtividade1, "Task4", "Task4 description", 15, 1);
 
-        mDb.addTask(task1);
-        mDb.addTask(task2);
-        mDb.addTask(task3);
-        mDb.addTask(task4);
+        mDb.addAtividade(task1);
+        mDb.addAtividade(task2);
+        mDb.addAtividade(task3);
+        mDb.addAtividade(task4);
 
     }
 }
