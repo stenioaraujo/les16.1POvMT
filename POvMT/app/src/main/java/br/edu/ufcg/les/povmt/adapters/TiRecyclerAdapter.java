@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.activities.MainActivity;
+import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.models.TiView;
 
 /**
@@ -24,9 +26,11 @@ import br.edu.ufcg.les.povmt.models.TiView;
  */
 public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.ViewHolder> {
     private ArrayList<TiView> mDataset;
+    private TabFragment1 owner;
 
-    public TiRecyclerAdapter(List<TiView> data) {
+    public TiRecyclerAdapter(List<TiView> data, TabFragment1 owner) {
         mDataset = (ArrayList<TiView>) data;
+        this.owner = owner;
         calcPercentage();
 
     }
@@ -39,13 +43,23 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(TiRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final TiRecyclerAdapter.ViewHolder holder, int position) {
         holder.currentTi.getTxtHour().setText(mDataset.get(position).getTxtHour().getText());
         holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
         holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
         holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
+
+
+
+        holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                owner.showEditDialog();
+            }
+        });
+
 
 
         switch (holder.currentTi.getPriorityId()) {

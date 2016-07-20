@@ -45,9 +45,7 @@ import br.edu.ufcg.les.povmt.models.UserData;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
-    private EditText edtDesc;
-    private EditText edtH;
-    private EditText edtM;
+
     private ImageView imageViewUser;
     private TextView textViewUsername;
     private TextView textViewUseremail;
@@ -110,9 +108,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        edtDesc = (EditText) findViewById(R.id.edtDesc);
-        edtH = (EditText) findViewById(R.id.edtH);
-        edtM = (EditText) findViewById(R.id.edtM);
+
 
         View header = navigationView.getHeaderView(0);
         imageViewUser = (ImageView) header.findViewById(R.id.imageViewUser);
@@ -124,11 +120,11 @@ public class MainActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
 
-        verifyIfLoggedIn();
-        setUserInfo();
+        //verifyIfLoggedIn();
+        //setUserInfo();
 
         this.dao = new DAO();
-        fill();
+//        fill();
     }
 
     private void verifyIfLoggedIn() {

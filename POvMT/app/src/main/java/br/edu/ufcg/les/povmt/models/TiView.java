@@ -167,6 +167,10 @@ public class TiView extends RelativeLayout {
     }
 
     public int getTimeToMin(){
-        return Integer.parseInt(txtHour.getText()+"")+Integer.parseInt(txtMin.getText()+"")/60;
+        try {
+            return Integer.parseInt(txtHour.getText() + "") + Integer.parseInt(txtMin.getText() + "") / 60;
+        }catch(NumberFormatException e){
+            return 0;
+        }
     }
 }

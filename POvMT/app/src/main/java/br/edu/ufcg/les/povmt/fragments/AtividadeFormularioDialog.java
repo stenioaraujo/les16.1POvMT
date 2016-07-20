@@ -28,6 +28,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
     private Button deletar;
     private Button salvar;
     private TabFragment1 tabFragment1;
+    private int prioridade = 0;
 
     private Bundle saved;
 
@@ -73,7 +74,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.botao_salvar:
-                    getTabFragment1().addTis();
+                    getTabFragment1().addTis(prioridade);
                     getDialog().dismiss();
                 case R.id.botao_deletar:
                     //setChecked(saved);
@@ -99,6 +100,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
                     media.setBackgroundColor(getResources().getColor(R.color.priortyMediumColor));
                     alta.setBackgroundColor(getResources().getColor(R.color.priortyHighColor));
 
+                    prioridade = 0;
                     break;
                 case R.id.button_media:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -108,6 +110,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
                     }
                     baixa.setBackgroundColor(getResources().getColor(R.color.priortyLowColor));
                     alta.setBackgroundColor(getResources().getColor(R.color.priortyHighColor));
+                    prioridade = 1;
                     break;
                 case R.id.button_alta:
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -117,6 +120,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
                     }
                     media.setBackgroundColor(getResources().getColor(R.color.priortyMediumColor));
                     baixa.setBackgroundColor(getResources().getColor(R.color.priortyLowColor));
+                    prioridade = 2;
                     break;
                 default:
                     break;
