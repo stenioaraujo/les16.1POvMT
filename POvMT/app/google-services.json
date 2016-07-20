@@ -15,6 +15,46 @@
       },
       "oauth_client": [
         {
+          "client_id": "600514318970-ara28jtv7b599edl6mmnp56ntghk3g4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "F5E9545D04F53FADC93663DEDDCF0A853AF54349"
+          }
+        },
+        {
+          "client_id": "600514318970-nba3eklteahbuf94vdrm45ki043l4vig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "0810390B426B9FDCEAE40C2A22A50A861BA7BC84"
+          }
+        },
+        {
+          "client_id": "600514318970-k8pqturi89f01b9kj4o29fddahhp7sve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "FB05E1191EF63F71F9D08C4821E934F67E48292B"
+          }
+        },
+        {
+          "client_id": "600514318970-elrqpes03ug5i8gs3rvm18avejnd884f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "92FF147DA257EBE2038608C11FCC26288B868A50"
+          }
+        },
+        {
+          "client_id": "600514318970-4n5ehgl3dm1u0jmihcokhpm4mgj4btd4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.ufcg.les.povmt",
+            "certificate_hash": "C2727E028C4F78BF01E0DBB0E892B9F7A9521D81"
+          }
+        },
+        {
           "client_id": "600514318970-2dv4onej9v0pcvgldjmj1j7ofoo95s48.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -9,6 +9,7 @@ import java.util.Date;
  */
 public class TimeInput {
 
+    private Atividade atividade;
     private Date dataCriacao;
     private float time = 0;
     private Atividade atvPai;
@@ -37,7 +38,12 @@ public class TimeInput {
         this.dataCriacao = dataCriacao;
     }
 
+<<<<<<< HEAD
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+=======
     public void setTime(float time) {
         this.time = time;
+>>>>>>> master
     }
 }
