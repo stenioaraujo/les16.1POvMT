@@ -1,10 +1,7 @@
-package br.edu.ufcg.les.povmt.database;
+package br.edu.ufcg.les.povmt.datahandlers;
 
-import android.content.Context;
+import java.util.Date;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
-
-import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 
@@ -14,23 +11,12 @@ import br.edu.ufcg.les.povmt.models.TimeInput;
 
 public class DBSPopulater {
 
-    /** The m db. */
-    private static DAO dao;
-
-    /**
-     * Instantiates a new DBS populater.
-     *
-     *
-     */
-    public DBSPopulater(DAO dao) {
-
-        this.dao = dao;
-    }
-
     /**
      * Populate bd.
      */
     public static void populateBD() {
+
+        DAO dao = DAO.getInstance();
 
         Atividade task1 = new Atividade();
         task1.setName("Task1");
@@ -38,7 +24,7 @@ public class DBSPopulater {
 
         Atividade task2 = new Atividade();
         task2.setName("Task2");
-        task2.setPriority(3);
+        task2.setPriority(0);
 
         Atividade task3 = new Atividade();
         task3.setName("Task3");
@@ -48,18 +34,25 @@ public class DBSPopulater {
         task4.setName("Task4");
         task4.setPriority(2);
 
-
         TimeInput timeInput1  = new TimeInput(120, task1);
+        timeInput1.setDataCriacao(new Date(0));
         TimeInput timeInput2  = new TimeInput(150, task1);
+        timeInput2.setDataCriacao(new Date(100));
 
         TimeInput timeInput3  = new TimeInput(200, task2);
+        timeInput3.setDataCriacao(new Date(200));
         TimeInput timeInput4  = new TimeInput(240, task2);
+        timeInput4.setDataCriacao(new Date(300));
 
         TimeInput timeInput5  = new TimeInput(50, task3);
+        timeInput5.setDataCriacao(new Date(400));
         TimeInput timeInput6  = new TimeInput(30, task3);
+        timeInput6.setDataCriacao(new Date(500));
 
         TimeInput timeInput7  = new TimeInput(60, task4);
+        timeInput7.setDataCriacao(new Date(600));
         TimeInput timeInput8  = new TimeInput(80, task4);
+        timeInput8.setDataCriacao(new Date(700));
 
         dao.add(task1);
         dao.add(task2);
@@ -74,8 +67,5 @@ public class DBSPopulater {
         dao.add(timeInput6);
         dao.add(timeInput7);
         dao.add(timeInput8);
-
-
-
     }
 }

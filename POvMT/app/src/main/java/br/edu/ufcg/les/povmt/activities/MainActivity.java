@@ -35,6 +35,7 @@ import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
+import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity
         setUserInfo();
 
         this.dao = DAO.getInstance();
-        fill();
+        DBSPopulater.populateBD();
     }
 
     private void verifyIfLoggedIn() {
@@ -147,15 +148,6 @@ public class MainActivity extends AppCompatActivity
 
             setUserInfo();
         }
-    }
-
-    private void fill() {
-        Atividade atv = new Atividade();
-        atv.setName("Stenio");
-        TimeInput ti = new TimeInput(20, atv);
-
-        dao.add(atv);
-        dao.add(ti);
     }
 
     private void setUserInfo() {

@@ -134,7 +134,7 @@ public class DAO {
             Long minutes = getTotalMinutes(timeInputs);
 
             String hours = getHours(minutes).toString();
-            String min = String.valueOf((minutes - getHours(minutes)));
+            String min = String.valueOf((minutes - getHours(minutes)*60));
 
             TiView tiView = new TiView(context, hours, min, atv, timeInputs);
             tiViews.add(tiView);
