@@ -67,5 +67,6 @@ public class DBSPopulater {
         dao.add(timeInput6);
         dao.add(timeInput7);
         dao.add(timeInput8);
+        dao.update();
     }
 }

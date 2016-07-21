@@ -33,6 +33,7 @@ public class DAO {
     private static DAO dao;
 
     private DAO() {
+
         initialize();
 
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
