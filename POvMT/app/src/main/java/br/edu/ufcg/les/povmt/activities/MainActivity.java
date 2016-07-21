@@ -122,10 +122,6 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         verifyIfLoggedIn();
-        setUserInfo();
-
-        this.dao = DAO.getInstance();
-        DBSPopulater.populateBD();
     }
 
     private void verifyIfLoggedIn() {
@@ -145,6 +141,9 @@ public class MainActivity extends AppCompatActivity
             if (mFirebaseUser.getPhotoUrl() != null) {
                 mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
             }
+
+            this.dao = DAO.getInstance();
+            DBSPopulater.populateBD();
 
             setUserInfo();
         }

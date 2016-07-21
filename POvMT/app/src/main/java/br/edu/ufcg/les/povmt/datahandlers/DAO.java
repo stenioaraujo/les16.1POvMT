@@ -32,7 +32,7 @@ public class DAO {
     private ValueEventListener listener;
     private static DAO dao;
 
-    public DAO() {
+    private DAO() {
         initialize();
 
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
@@ -61,8 +61,12 @@ public class DAO {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
-                    userData = dataSnapshot.getValue(UserData.class);
-                    Log.v("DB_UPDATED", "Acabei de ser modificado");
+                    UserData newUserData = dataSnapshot.getValue(UserData.class);
+
+                    if (newUserData != null)
+                        userData = newUserData;
+
+                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + userData.getUid());
                 } catch (Throwable t) {
                     Log.e("DB_ERROR", t.getMessage());
                 }
