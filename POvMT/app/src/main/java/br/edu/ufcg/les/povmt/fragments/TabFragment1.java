@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.reflect.Array;
@@ -25,6 +27,7 @@ import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
+import br.edu.ufcg.les.povmt.models.TipoAtividade;
 
 /**
  * Created by Isaque on 15-Jul-16.
@@ -39,6 +42,9 @@ public class TabFragment1 extends Fragment {
     private EditText edtH;
     private EditText edtM;
     private DAO dao;
+    private Button buttonFiltrar;
+    private TextView hora;
+    private TextView minuto;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,16 +55,16 @@ public class TabFragment1 extends Fragment {
         edtM = (EditText) rootView.findViewById(R.id.edtM);
 
         atividade = new Atividade();
-        /**
+
         ArrayList<TiView> tis = new ArrayList<TiView>();
         tis.add(new TiView(getContext(), "6", "29", "Les", 2));
         tis.add(new TiView(getContext(), "4", "30", "Empsoft", 1));
         tis.add(new TiView(getContext(), "3", "54", "So", 0));
         tis.add(new TiView(getContext(), "2", "10", "Irc", 0));
         tis.add(new TiView(getContext(), "10", "45", "Festar", 2));
-         **/
+
         dao = DAO.getInstance();
-        List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
+       // List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         // use a linear layout manager
@@ -66,6 +72,11 @@ public class TabFragment1 extends Fragment {
         mRecycler.setLayoutManager(mLayoutManager);
         mAdapter = new TiRecyclerAdapter(tis, this);
         mRecycler.setAdapter(mAdapter);
+
+        hora = (TextView) rootView.findViewById(R.id.textViewTempoInvestidoHora);
+        minuto = (TextView) rootView.findViewById(R.id.textViewTempoInvestidoMin);
+
+        atualizarTempoInvestido(tis);
 
 //
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
@@ -77,6 +88,14 @@ public class TabFragment1 extends Fragment {
         });
 
 
+        buttonFiltrar = (Button) rootView.findViewById(R.id.button_filtrar);
+        buttonFiltrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFiltrarDialog();
+            }
+        });
+
         return rootView;
     }
 
@@ -87,9 +106,14 @@ public class TabFragment1 extends Fragment {
         editNameDialog.show(fm, "editNameDialog");
     }
 
-    public void onFinishEditDialog(String inputText) {
-        Toast.makeText(getActivity(), "Hi", Toast.LENGTH_SHORT).show();
+    public void showFiltrarDialog(){
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        AtividadeFiltroDialog filtroDialog = new AtividadeFiltroDialog();
+        filtroDialog.setTabFragment1(this);
+        filtroDialog.show(fm, "filtroDialog");
     }
+
+
 
     public void addTis(int priority) {
         TiView ti = new TiView(getContext());
@@ -104,6 +128,7 @@ public class TabFragment1 extends Fragment {
             atv = new Atividade();
             atv.setName(ti.getTxtName().getText() + "");
             atv.setPriority(ti.getPriorityId());
+
         }
 
         Long hora = Long.parseLong(h);
@@ -117,6 +142,26 @@ public class TabFragment1 extends Fragment {
         mAdapter.add(ti);
     }
 
+
+    public void filtrar(TipoAtividade tipo){
+        // TODO getAtividade by type
+        Toast.makeText(getActivity(), tipo.tipo(), Toast.LENGTH_SHORT).show();
+
+    }
+
+    private int calcMin(List<TiView> mDataset) {
+        int totalMin = 0;
+        for (TiView ti : mDataset) {
+            totalMin += ti.getTimeToMin();
+        }
+        return totalMin;
+    }
+
+    private void atualizarTempoInvestido(List<TiView> tis){
+        hora.setText(String.valueOf(calcMin(tis) /60));
+        int minutos = calcMin(tis) % 60;
+        minuto.setText(String.valueOf(minutos));
+    }
 
     public Atividade getAtividade() {
         return atividade;

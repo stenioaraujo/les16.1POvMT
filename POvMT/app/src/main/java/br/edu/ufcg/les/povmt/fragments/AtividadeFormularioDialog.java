@@ -19,7 +19,6 @@ import br.edu.ufcg.les.povmt.models.Atividade;
  * Created by luiz on 17/07/16.
  */
 public class AtividadeFormularioDialog  extends DialogFragment {
-    private EditText nomeAtividade;
     private RadioButton rbTrabalho;
     private RadioButton rbLazer;
     private Button baixa;
@@ -47,8 +46,6 @@ public class AtividadeFormularioDialog  extends DialogFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.atividade_fragment_dialog, container);
         getDialog().setTitle("Categorias da Atividade");
-        nomeAtividade = (EditText) view.findViewById(R.id.editTextNomeAtividade);
-        nomeAtividade.setText(getTabFragment1().getAtividade().getName());
         rbTrabalho =  (RadioButton) view.findViewById(R.id.radio_trabalho);
         rbLazer =  (RadioButton) view.findViewById(R.id.radio_lazer);
         baixa =  (Button) view.findViewById(R.id.button_baixa);
