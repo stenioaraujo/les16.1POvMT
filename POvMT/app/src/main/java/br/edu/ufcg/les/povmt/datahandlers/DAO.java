@@ -161,6 +161,7 @@ public class DAO {
     }
 
     public void update() {
-        firebaseRef.setValue(userData);
+        if (userData != null)
+            firebaseRef.setValue(userData);
     }
 }

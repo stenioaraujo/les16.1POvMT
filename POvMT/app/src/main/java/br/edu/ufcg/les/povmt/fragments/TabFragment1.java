@@ -27,7 +27,6 @@ import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
-import br.edu.ufcg.les.povmt.models.TipoAtividade;
 
 /**
  * Created by Isaque on 15-Jul-16.
@@ -143,9 +142,9 @@ public class TabFragment1 extends Fragment {
     }
 
 
-    public void filtrar(TipoAtividade tipo){
+    public void filtrar(String tipo){
         // TODO getAtividade by type
-        Toast.makeText(getActivity(), tipo.tipo(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), tipo, Toast.LENGTH_SHORT).show();
 
     }
 

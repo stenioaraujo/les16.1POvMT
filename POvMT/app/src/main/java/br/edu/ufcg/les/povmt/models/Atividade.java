@@ -9,12 +9,11 @@ import java.util.Set;
  * Created by Isaque on 12-Jul-16.
  */
 public class Atividade {
-
     private String name;
     private String description;
     private int priority;
     private Long totalTime;
-    private TipoAtividade tipoAtividade;
+    private String tipoAtividade;
 
     public Atividade(){
         this.name = "Lorem";
@@ -58,11 +57,11 @@ public class Atividade {
         this.priority = priority;
     }
 
-    public TipoAtividade getTipoAtividade() {
+    public String getTipoAtividade() {
         return tipoAtividade;
     }
 
-    public void setTipoAtividade(TipoAtividade tipoAtividade) {
+    public void setTipoAtividade(String tipoAtividade) {
         this.tipoAtividade = tipoAtividade;
     }
 

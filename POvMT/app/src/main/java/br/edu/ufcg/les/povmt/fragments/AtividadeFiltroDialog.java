@@ -21,7 +21,7 @@ public class AtividadeFiltroDialog extends DialogFragment {
     private RadioButton rbLazer;
     private Button filtrar;
     private TabFragment1 tabFragment1;
-    private TipoAtividade tipo;
+    private String tipo;
 
     private Bundle saved;
 
