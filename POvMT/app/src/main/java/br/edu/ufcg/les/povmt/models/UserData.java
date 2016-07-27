@@ -13,8 +13,6 @@ import java.util.Set;
  * Created by stenio on 7/16/2016.
  */
 public class UserData {
-    private List<Atividade> atividades;
-    private List<TimeInput> timeInputs;
     private String nome;
     private Date lastLogin;
     private long lastLoginTimestamp;
@@ -24,20 +22,18 @@ public class UserData {
 
     public UserData(String uid) {
         this.uid = uid;
-        this.atividades = new LinkedList<Atividade>();
-        this.timeInputs = new LinkedList<TimeInput>();
     }
 
     public List<Atividade> getAtividades() {
         //List<Atividade> result = new ArrayList<Atividade>(Arrays.asList(atividades));
 
-        return this.atividades;
+        return new ArrayList<>();
     }
 
     public List<TimeInput> getTimeInputs() {
         //List<TimeInput> result = new ArrayList<TimeInput>(Arrays.asList(timeInputs));
 
-        return this.timeInputs;
+        return new ArrayList<>();
     }
 
     public String getNome() {
@@ -55,8 +51,6 @@ public class UserData {
     }
 
     public void setAtividades(List<Atividade> atividades) {
-
-        this.atividades = new LinkedList<Atividade>(atividades);
     }
 
     public void setLastLogin(Date lastLogin) {
@@ -69,6 +63,5 @@ public class UserData {
     }
 
     public void setTimeInputs(List<TimeInput> timeInputs) {
-        this.timeInputs = new LinkedList<TimeInput>(timeInputs);
     }
 }
