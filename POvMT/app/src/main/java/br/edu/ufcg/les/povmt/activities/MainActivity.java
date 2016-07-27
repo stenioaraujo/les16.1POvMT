@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
 
     private Date lastLogin;
-    private UserData usuario
-            ;
+    private UserData usuario;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;

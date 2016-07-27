@@ -12,8 +12,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -33,7 +35,6 @@ public class DAO {
     private static DAO dao;
 
     private DAO() {
-
         initialize();
 
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
@@ -81,18 +82,20 @@ public class DAO {
     }
 
     public void add(Atividade atividade) {
-        List<Atividade> atividades = userData.getAtividades();
+        Map<String, Atividade> atividades = userData.getAtividades();
 
-        if (!atividades.contains(atividade)) {
-            atividades.add(atividade);
+        if (!atividades.values().contains(atividade)) {
+            String key = firebaseRef.child("atividades").push().getKey();
+            atividades.put(key, atividade);
         }
     }
 
     public void add(TimeInput ti) {
-        List<TimeInput> timeInputs = userData.getTimeInputs();
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
 
-        if (!timeInputs.contains(ti)) {
-            timeInputs.add(ti);
+        if (!timeInputs.values().contains(ti)) {
+            String key = firebaseRef.child("timeInputs").push().getKey();
+            timeInputs.put(key, ti);
         }
     }
 
@@ -101,7 +104,7 @@ public class DAO {
     }
 
     public Atividade getAtividade(String atvNome) {
-        for (Atividade atv: userData.getAtividades()) {
+        for (Atividade atv: userData.getAtividades().values()) {
             if (atv.getName().equals(atvNome)) {
                 return atv;
             }
@@ -114,7 +117,7 @@ public class DAO {
         List<TimeInput> timeInputs = new ArrayList<>();
 
         StringBuffer bf = new StringBuffer();
-        for (TimeInput ti: userData.getTimeInputs()) {
+        for (TimeInput ti: userData.getTimeInputs().values()) {
             Date criado = ti.getDataCriacao();
             if (ti.getAtvPai().equals(atv)) {
                 bf.append(atv.getName() + "\n");
@@ -130,7 +133,7 @@ public class DAO {
 
     public List<TiView> getTiViews(Context context, Date start, Date end) {
         List<TiView> tiViews = new ArrayList<>();
-        List<Atividade> atividades = userData.getAtividades();
+        Collection<Atividade> atividades = userData.getAtividades().values();
 
         for (Atividade atv: atividades) {
             List<TimeInput> timeInputs = getTimeInputs(start, end, atv);

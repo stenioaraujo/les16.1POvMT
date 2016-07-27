@@ -53,17 +53,8 @@ public class TabFragment1 extends Fragment {
         edtH = (EditText) rootView.findViewById(R.id.edtH);
         edtM = (EditText) rootView.findViewById(R.id.edtM);
 
-        atividade = new Atividade();
-
-        ArrayList<TiView> tis = new ArrayList<TiView>();
-        tis.add(new TiView(getContext(), "6", "29", "Les", 2));
-        tis.add(new TiView(getContext(), "4", "30", "Empsoft", 1));
-        tis.add(new TiView(getContext(), "3", "54", "So", 0));
-        tis.add(new TiView(getContext(), "2", "10", "Irc", 0));
-        tis.add(new TiView(getContext(), "10", "45", "Festar", 2));
-
         dao = DAO.getInstance();
-       // List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
+        List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         // use a linear layout manager
