@@ -85,6 +85,7 @@ public class DAO {
 
         if (!atividades.contains(atividade)) {
             atividades.add(atividade);
+            userData.setAtividades(atividades);
         }
     }
 
@@ -93,6 +94,7 @@ public class DAO {
 
         if (!timeInputs.contains(ti)) {
             timeInputs.add(ti);
+            userData.setTimeInputs(timeInputs);
         }
     }
 
