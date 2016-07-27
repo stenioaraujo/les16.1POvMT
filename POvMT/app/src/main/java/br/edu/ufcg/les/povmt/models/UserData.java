@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,8 +13,8 @@ import java.util.Set;
  * Created by stenio on 7/16/2016.
  */
 public class UserData {
-    private Atividade[] atividades;
-    private TimeInput[] timeInputs;
+    private List<Atividade> atividades;
+    private List<TimeInput> timeInputs;
     private String nome;
     private Date lastLogin;
     private long lastLoginTimestamp;
@@ -23,20 +24,20 @@ public class UserData {
 
     public UserData(String uid) {
         this.uid = uid;
-        this.atividades = new Atividade[0];
-        this.timeInputs = new TimeInput[0];
+        this.atividades = new LinkedList<Atividade>();
+        this.timeInputs = new LinkedList<TimeInput>();
     }
 
     public List<Atividade> getAtividades() {
-        List<Atividade> result = new ArrayList<Atividade>(Arrays.asList(atividades));
+        //List<Atividade> result = new ArrayList<Atividade>(Arrays.asList(atividades));
 
-        return result;
+        return this.atividades;
     }
 
     public List<TimeInput> getTimeInputs() {
-        List<TimeInput> result = new ArrayList<TimeInput>(Arrays.asList(timeInputs));
+        //List<TimeInput> result = new ArrayList<TimeInput>(Arrays.asList(timeInputs));
 
-        return result;
+        return this.timeInputs;
     }
 
     public String getNome() {
@@ -54,9 +55,8 @@ public class UserData {
     }
 
     public void setAtividades(List<Atividade> atividades) {
-        Atividade [] input = atividades.toArray(new Atividade[0]);
 
-        this.atividades = input;
+        this.atividades = new LinkedList<Atividade>(atividades);
     }
 
     public void setLastLogin(Date lastLogin) {
@@ -69,8 +69,6 @@ public class UserData {
     }
 
     public void setTimeInputs(List<TimeInput> timeInputs) {
-        TimeInput [] input = timeInputs.toArray(new TimeInput[0]);
-
-        this.timeInputs = input;
+        this.timeInputs = new LinkedList<TimeInput>(timeInputs);
     }
 }
