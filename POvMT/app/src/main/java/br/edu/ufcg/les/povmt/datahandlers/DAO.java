@@ -130,11 +130,9 @@ public class DAO {
     public List<TimeInput> getTimeInputs(Date start, Date end, Atividade atv) {
         List<TimeInput> timeInputs = new ArrayList<>();
 
-        StringBuffer bf = new StringBuffer();
         for (TimeInput ti: userData.getTimeInputs().values()) {
             Date criado = ti.getDataCriacao();
             if (ti.getAtvPai().equals(atv)) {
-                bf.append(atv.getName() + "\n");
                 if (criado.after(start) && criado.before(end) ||
                         criado.equals(start) || criado.equals(end)) {
                     timeInputs.add(ti);
