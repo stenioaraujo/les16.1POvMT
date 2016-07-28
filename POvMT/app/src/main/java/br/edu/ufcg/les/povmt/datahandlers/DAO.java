@@ -187,4 +187,52 @@ public class DAO {
     public String getUid() {
         return userData.getUid();
     }
+
+    public List<Atividade> getAtividadesStartingWith(String text) {
+        List<Atividade> atividades = new ArrayList<>();
+
+        for (Atividade atv: userData.getAtividades().values()) {
+            if (text == null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
+                atividades.add(atv);
+        }
+
+        return atividades;
+    }
+
+    public void removeTimeInputs(Atividade atv) {
+        if (atv == null) return;
+
+        Map<String, TimeInput> tis = userData.getTimeInputs();
+        Set<String> tiIDs = tis.keySet();
+
+        for (String tiID: tiIDs) {
+            if (tis.get(tiID) != null && atv.equals(tis.get(tiID).getAtvPai())) {
+                tis.remove(tiID);
+            }
+        }
+    }
+
+    public void removeAtividade(Atividade atv) {
+        if (atv == null) return;
+
+        removeTimeInputs(atv);
+
+        Map<String, Atividade> atividades = userData.getAtividades();
+        for(String atvID: atividades.keySet()) {
+            if (atv.equals(atividades.get(atv))) {
+                atividades.remove(atvID);
+            }
+        }
+    }
+
+    public void removeTimeInput(TimeInput ti) {
+        if (ti == null) return;
+
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
+        for(String tiID: timeInputs.keySet()) {
+            if (ti.equals(timeInputs.get(ti))) {
+                timeInputs.remove(tiID);
+            }
+        }
+    }
 }
