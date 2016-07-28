@@ -36,14 +36,11 @@ import br.edu.ufcg.les.povmt.models.TiView;
 public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.ViewHolder> {
     private List<TiView> mDataset;
     private TabFragment1 owner;
-    private DAO dao;
 
     public TiRecyclerAdapter(List<TiView> data, TabFragment1 owner) {
         mDataset = data;
         Collections.sort(data);
 
-        dao = DAO.getInstance();
-        addDBListener();
 
         this.owner = owner;
         calcPercentage();
@@ -93,7 +90,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         holder.currentTi.getProgress().setLayoutParams(lp);
         holder.currentTi.getProgress().invalidate();
         holder.currentTi.getProgress().requestLayout();
-
     }
 
     @Override
@@ -145,7 +141,8 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         notifyDataSetChanged();
     }
 
-    private void addDBListener() {
+    public void addDBListener() {
+        final DAO dao = DAO.getInstance();
         dao.addListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -153,6 +150,8 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
                 mDataset = dao.getTiViews(owner.getContext(), new Date(0), new Date());
                 owner.atualizarTempoInvestido(mDataset);
                 update();
+
+                Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());
             }
 
             @Override

@@ -19,7 +19,6 @@ public class UserData {
     private Map<String, Atividade> atividades;
     private Map<String, TimeInput> timeInputs;
     private String nome;
-    private long lastLoginTimestamp;
     private String uid;
 
     private UserData() {}
@@ -40,13 +39,6 @@ public class UserData {
         return this.nome;
     }
 
-    @Exclude
-    public Date getLastLogin() {
-        return new Date(this.lastLoginTimestamp);
-    }
-
-    public long getLastLoginTimestamp() { return this.lastLoginTimestamp; }
-
     public String getUid() {
         return uid;
     }
@@ -56,10 +48,6 @@ public class UserData {
     }
 
     public void setTimeInputs(Map<String, TimeInput> timeInputs) { this.timeInputs = timeInputs; }
-
-    public void setLastLogin(Date lastLogin) {
-        this.lastLoginTimestamp = lastLogin.getTime();
-    }
 
     public void setNome(String nome) {
         this.nome = nome;

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,7 @@ public class TabFragment1 extends Fragment {
         minuto = (TextView) rootView.findViewById(R.id.textViewTempoInvestidoMin);
 
         atualizarTempoInvestido(tis);
-
+        mAdapter.addDBListener();
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

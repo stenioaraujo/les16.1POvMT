@@ -36,21 +36,32 @@ public class DAO {
     private static DAO dao;
 
     private DAO() {
-        initialize();
-
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
-        this.firebaseRef = firebaseRef.child("users").child(userData.getUid());
+
+        this.listeners = new HashSet<ValueEventListener>();
+
+        initialize();
+    }
+
+    private void createUserData() {
+        userData = new UserData(mFirebaseUser.getUid());
+        userData.setNome(mFirebaseUser.getDisplayName());
+    }
+
+    public void initialize() {
+        for(ValueEventListener listener: listeners) {
+            firebaseRef.removeEventListener(listener);
+        }
+
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        firebaseRef = FirebaseDatabase.getInstance().getReference();
+        firebaseRef = firebaseRef.child("users").child(mFirebaseUser.getUid());
 
         this.listeners = new HashSet<ValueEventListener>();
         listeners.add(addListenerFirebase());
-    }
 
-    private void initialize() {
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        userData = new UserData(mFirebaseUser.getUid());
-        userData.setLastLogin(new Date());
-        userData.setNome(mFirebaseUser.getDisplayName());
+        createUserData();
     }
 
     public static DAO getInstance() {
@@ -62,6 +73,7 @@ public class DAO {
 
     private ValueEventListener addListenerFirebase() {
         return firebaseRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -70,7 +82,7 @@ public class DAO {
                     if (newUserData != null)
                         userData = newUserData;
 
-                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + userData.getUid());
+                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + mFirebaseUser.getUid());
                 } catch (Throwable t) {
                     Log.e("DB_ERROR", t.getMessage());
                 }
@@ -172,5 +184,9 @@ public class DAO {
 
     public void addListener(ValueEventListener listener) {
         this.listeners.add(firebaseRef.addValueEventListener(listener));
+    }
+
+    public String getUid() {
+        return userData.getUid();
     }
 }
