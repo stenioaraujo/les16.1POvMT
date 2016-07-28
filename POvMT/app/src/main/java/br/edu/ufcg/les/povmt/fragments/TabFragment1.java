@@ -53,6 +53,16 @@ public class TabFragment1 extends Fragment {
         edtH = (EditText) rootView.findViewById(R.id.edtH);
         edtM = (EditText) rootView.findViewById(R.id.edtM);
 
+/*
+        atividade = new Atividade();
+        ArrayList<TiView> tis = new ArrayList<TiView>();
+        tis.add(new TiView(getContext(), "6", "29", "Les", 2));
+        tis.add(new TiView(getContext(), "4", "30", "Empsoft", 1));
+        tis.add(new TiView(getContext(), "3", "54", "So", 0));
+        tis.add(new TiView(getContext(), "2", "10", "Irc", 0));
+        tis.add(new TiView(getContext(), "10", "45", "Festar", 2));
+*/
+
         dao = DAO.getInstance();
         List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
 
@@ -68,7 +78,7 @@ public class TabFragment1 extends Fragment {
 
         atualizarTempoInvestido(tis);
 
-//
+
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,7 +157,7 @@ public class TabFragment1 extends Fragment {
         return totalMin;
     }
 
-    private void atualizarTempoInvestido(List<TiView> tis){
+    public void atualizarTempoInvestido(List<TiView> tis){
         hora.setText(String.valueOf(calcMin(tis) /60));
         int minutos = calcMin(tis) % 60;
         minuto.setText(String.valueOf(minutos));

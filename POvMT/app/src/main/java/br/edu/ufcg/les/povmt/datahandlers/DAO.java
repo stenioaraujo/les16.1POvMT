@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class DAO {
     private UserData userData;
     private FirebaseUser mFirebaseUser;
     private String uid;
-    private ValueEventListener listener;
+    private Set<ValueEventListener> listeners;
     private static DAO dao;
 
     private DAO() {
@@ -40,7 +41,8 @@ public class DAO {
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
         this.firebaseRef = firebaseRef.child("users").child(userData.getUid());
 
-        this.listener = addListenerFirebase();
+        this.listeners = new HashSet<ValueEventListener>();
+        listeners.add(addListenerFirebase());
     }
 
     private void initialize() {
@@ -166,5 +168,9 @@ public class DAO {
     public void update() {
         if (userData != null)
             firebaseRef.setValue(userData);
+    }
+
+    public void addListener(ValueEventListener listener) {
+        this.listeners.add(firebaseRef.addValueEventListener(listener));
     }
 }
