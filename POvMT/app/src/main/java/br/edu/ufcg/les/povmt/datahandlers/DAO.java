@@ -82,9 +82,9 @@ public class DAO {
                     if (newUserData != null)
                         userData = newUserData;
 
-                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + mFirebaseUser.getUid());
+                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + mFirebaseUser.getDisplayName() + " " + mFirebaseUser.getUid());
                 } catch (Throwable t) {
-                    Log.e("DB_ERROR", t.getMessage());
+                    Log.e("DB_ERROR", t.getMessage() + "");
                 }
             }
 
@@ -203,7 +203,7 @@ public class DAO {
         if (atv == null) return;
 
         Map<String, TimeInput> tis = userData.getTimeInputs();
-        Set<String> tiIDs = tis.keySet();
+        Set<String> tiIDs = new HashSet<>(tis.keySet());
 
         for (String tiID: tiIDs) {
             if (tis.get(tiID) != null && atv.equals(tis.get(tiID).getAtvPai())) {
@@ -218,8 +218,9 @@ public class DAO {
         removeTimeInputs(atv);
 
         Map<String, Atividade> atividades = userData.getAtividades();
-        for(String atvID: atividades.keySet()) {
-            if (atv.equals(atividades.get(atv))) {
+        Set<String> atvIDs = new HashSet<>(atividades.keySet());
+        for(String atvID: atvIDs) {
+            if (atv.equals(atividades.get(atvID))) {
                 atividades.remove(atvID);
             }
         }
@@ -229,8 +230,9 @@ public class DAO {
         if (ti == null) return;
 
         Map<String, TimeInput> timeInputs = userData.getTimeInputs();
-        for(String tiID: timeInputs.keySet()) {
-            if (ti.equals(timeInputs.get(ti))) {
+        Set<String> tiIDs = new HashSet<>(timeInputs.keySet());
+        for(String tiID: tiIDs) {
+            if (ti.equals(timeInputs.get(tiID))) {
                 timeInputs.remove(tiID);
             }
         }
