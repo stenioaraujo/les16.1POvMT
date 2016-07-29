@@ -12,7 +12,6 @@ public class Atividade {
     private String name;
     private String description;
     private int priority;
-    private Long totalTime;
     private String tipoAtividade;
 
     public Atividade(){
@@ -24,9 +23,6 @@ public class Atividade {
 
 
     //Getters and Setters
-    public Long getTotalTime() {
-        return totalTime;
-    }
 
     public int getPriority() {
         return priority;
@@ -47,10 +43,6 @@ public class Atividade {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setTotalTime(Long totalTime) {
-        this.totalTime = totalTime;
     }
 
     public void setPriority(int priority) {

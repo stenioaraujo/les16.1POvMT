@@ -68,4 +68,9 @@ public class TimeInput implements Comparable<TimeInput> {
         return ti2.getAtvPai().equals(this.getAtvPai()) &&
                 ti2.getDataCriacao().equals(this.getDataCriacao());
     }
+
+    public void setAtvPai(Atividade atvPai) {
+        if(atvPai != null)
+            this.atvPai = atvPai;
+    }
 }

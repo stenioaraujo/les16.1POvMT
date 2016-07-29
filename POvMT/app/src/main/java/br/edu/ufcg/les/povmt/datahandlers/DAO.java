@@ -114,7 +114,10 @@ public class DAO {
     }
 
     public Atividade getAtividade(Atividade atv) {
-        return getAtividade(atv.getName());
+        if (atv != null)
+            return getAtividade(atv.getName());
+
+        return null;
     }
 
     public Atividade getAtividade(String atvNome) {
@@ -234,6 +237,31 @@ public class DAO {
         for(String tiID: tiIDs) {
             if (ti.equals(timeInputs.get(tiID))) {
                 timeInputs.remove(tiID);
+            }
+        }
+    }
+
+    public void updateAtividade(Atividade antiga, Atividade nova) {
+        Atividade atividade = getAtividade(antiga);
+
+        if (antiga != null && nova != null) {
+            if (!nova.getName().equals(antiga.getName())
+                    && getAtividade(nova.getName()) != null) {
+                Log.v("ATIVIDADE_UPDATE_ERROR", "Vc esta tentando renomear " +
+                        antiga.getName() + " para " + nova.getName() + ", mas " + nova.getName() +
+                        " ja existe");
+                return;
+            }
+
+            List<TimeInput> timeInputsAtividade = getTimeInputs(new Date(0), new Date(), antiga);
+
+            atividade.setName(nova.getName());
+            atividade.setPriority(nova.getPriority());
+            atividade.setDescription(nova.getDescription());
+            atividade.setTipoAtividade(nova.getTipoAtividade());
+
+            for (TimeInput ti: timeInputsAtividade) {
+                ti.setAtvPai(atividade);
             }
         }
     }
