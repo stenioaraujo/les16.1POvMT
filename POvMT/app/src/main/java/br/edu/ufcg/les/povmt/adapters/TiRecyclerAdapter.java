@@ -13,13 +13,19 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.activities.MainActivity;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.TiView;
@@ -34,6 +40,7 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
     public TiRecyclerAdapter(List<TiView> data, TabFragment1 owner) {
         mDataset = data;
         Collections.sort(data);
+
 
         this.owner = owner;
         calcPercentage();
@@ -83,7 +90,6 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         holder.currentTi.getProgress().setLayoutParams(lp);
         holder.currentTi.getProgress().invalidate();
         holder.currentTi.getProgress().requestLayout();
-
     }
 
     @Override
@@ -119,23 +125,41 @@ public class TiRecyclerAdapter extends RecyclerView.Adapter<TiRecyclerAdapter.Vi
         } else {
             TiView tiv = mDataset.get(pos);
             tiv.increment((long) item.getTimeToMin());
-            update(pos);
+            update();
         }
     }
 
     public void add(int position, TiView item) {
         mDataset.add(position, item);
-        update(position);
+        update();
     }
 
-    public void update(int position) {
+    public void update() {
         Collections.sort(mDataset);
 
         calcPercentage();
-        notifyItemInserted(position);
         notifyDataSetChanged();
     }
 
+    public void addDBListener() {
+        final DAO dao = DAO.getInstance();
+        dao.addListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //TODO essa parte aqui tem que pegar um limite de tempo, nao sei qual
+                mDataset = dao.getTiViews(owner.getContext(), new Date(0), new Date());
+                owner.atualizarTempoInvestido(mDataset);
+                update();
+
+                Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void remove(TiView item) {
         int position = mDataset.indexOf(item);

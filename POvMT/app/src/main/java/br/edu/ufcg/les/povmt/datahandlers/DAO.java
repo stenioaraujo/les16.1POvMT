@@ -12,8 +12,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -29,25 +32,36 @@ public class DAO {
     private UserData userData;
     private FirebaseUser mFirebaseUser;
     private String uid;
-    private ValueEventListener listener;
+    private Set<ValueEventListener> listeners;
     private static DAO dao;
 
     private DAO() {
+        this.firebaseRef = FirebaseDatabase.getInstance().getReference();
+
+        this.listeners = new HashSet<ValueEventListener>();
 
         initialize();
-
-        this.firebaseRef = FirebaseDatabase.getInstance().getReference();
-        this.firebaseRef = firebaseRef.child("users").child(userData.getUid());
-
-        this.listener = addListenerFirebase();
     }
 
-    private void initialize() {
+    private void createUserData() {
+        userData = new UserData(mFirebaseUser.getUid());
+        userData.setNome(mFirebaseUser.getDisplayName());
+    }
+
+    public void initialize() {
+        for(ValueEventListener listener: listeners) {
+            firebaseRef.removeEventListener(listener);
+        }
+
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        userData = new UserData(mFirebaseUser.getUid());
-        userData.setLastLogin(new Date());
-        userData.setNome(mFirebaseUser.getDisplayName());
+        firebaseRef = FirebaseDatabase.getInstance().getReference();
+        firebaseRef = firebaseRef.child("users").child(mFirebaseUser.getUid());
+
+        this.listeners = new HashSet<ValueEventListener>();
+        listeners.add(addListenerFirebase());
+
+        createUserData();
     }
 
     public static DAO getInstance() {
@@ -59,6 +73,7 @@ public class DAO {
 
     private ValueEventListener addListenerFirebase() {
         return firebaseRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -67,9 +82,9 @@ public class DAO {
                     if (newUserData != null)
                         userData = newUserData;
 
-                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + userData.getUid());
+                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + mFirebaseUser.getDisplayName() + " " + mFirebaseUser.getUid());
                 } catch (Throwable t) {
-                    Log.e("DB_ERROR", t.getMessage());
+                    Log.e("DB_ERROR", t.getMessage() + "");
                 }
             }
 
@@ -81,18 +96,20 @@ public class DAO {
     }
 
     public void add(Atividade atividade) {
-        List<Atividade> atividades = userData.getAtividades();
+        Map<String, Atividade> atividades = userData.getAtividades();
 
-        if (!atividades.contains(atividade)) {
-            atividades.add(atividade);
+        if (!atividades.values().contains(atividade)) {
+            String key = firebaseRef.child("atividades").push().getKey();
+            atividades.put(key, atividade);
         }
     }
 
     public void add(TimeInput ti) {
-        List<TimeInput> timeInputs = userData.getTimeInputs();
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
 
-        if (!timeInputs.contains(ti)) {
-            timeInputs.add(ti);
+        if (!timeInputs.values().contains(ti)) {
+            String key = firebaseRef.child("timeInputs").push().getKey();
+            timeInputs.put(key, ti);
         }
     }
 
@@ -101,7 +118,7 @@ public class DAO {
     }
 
     public Atividade getAtividade(String atvNome) {
-        for (Atividade atv: userData.getAtividades()) {
+        for (Atividade atv: userData.getAtividades().values()) {
             if (atv.getName().equals(atvNome)) {
                 return atv;
             }
@@ -113,11 +130,9 @@ public class DAO {
     public List<TimeInput> getTimeInputs(Date start, Date end, Atividade atv) {
         List<TimeInput> timeInputs = new ArrayList<>();
 
-        StringBuffer bf = new StringBuffer();
-        for (TimeInput ti: userData.getTimeInputs()) {
+        for (TimeInput ti: userData.getTimeInputs().values()) {
             Date criado = ti.getDataCriacao();
             if (ti.getAtvPai().equals(atv)) {
-                bf.append(atv.getName() + "\n");
                 if (criado.after(start) && criado.before(end) ||
                         criado.equals(start) || criado.equals(end)) {
                     timeInputs.add(ti);
@@ -130,7 +145,7 @@ public class DAO {
 
     public List<TiView> getTiViews(Context context, Date start, Date end) {
         List<TiView> tiViews = new ArrayList<>();
-        List<Atividade> atividades = userData.getAtividades();
+        Collection<Atividade> atividades = userData.getAtividades().values();
 
         for (Atividade atv: atividades) {
             List<TimeInput> timeInputs = getTimeInputs(start, end, atv);
@@ -161,6 +176,65 @@ public class DAO {
     }
 
     public void update() {
-        firebaseRef.setValue(userData);
+        if (userData != null)
+            firebaseRef.setValue(userData);
+    }
+
+    public void addListener(ValueEventListener listener) {
+        this.listeners.add(firebaseRef.addValueEventListener(listener));
+    }
+
+    public String getUid() {
+        return userData.getUid();
+    }
+
+    public List<Atividade> getAtividadesStartingWith(String text) {
+        List<Atividade> atividades = new ArrayList<>();
+
+        for (Atividade atv: userData.getAtividades().values()) {
+            if (text == null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
+                atividades.add(atv);
+        }
+
+        return atividades;
+    }
+
+    public void removeTimeInputs(Atividade atv) {
+        if (atv == null) return;
+
+        Map<String, TimeInput> tis = userData.getTimeInputs();
+        Set<String> tiIDs = new HashSet<>(tis.keySet());
+
+        for (String tiID: tiIDs) {
+            if (tis.get(tiID) != null && atv.equals(tis.get(tiID).getAtvPai())) {
+                tis.remove(tiID);
+            }
+        }
+    }
+
+    public void removeAtividade(Atividade atv) {
+        if (atv == null) return;
+
+        removeTimeInputs(atv);
+
+        Map<String, Atividade> atividades = userData.getAtividades();
+        Set<String> atvIDs = new HashSet<>(atividades.keySet());
+        for(String atvID: atvIDs) {
+            if (atv.equals(atividades.get(atvID))) {
+                atividades.remove(atvID);
+            }
+        }
+    }
+
+    public void removeTimeInput(TimeInput ti) {
+        if (ti == null) return;
+
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
+        Set<String> tiIDs = new HashSet<>(timeInputs.keySet());
+        for(String tiID: tiIDs) {
+            if (ti.equals(timeInputs.get(tiID))) {
+                timeInputs.remove(tiID);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 package br.edu.ufcg.les.povmt.models;
 
-import java.sql.Time;
+import com.google.firebase.database.Exclude;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,12 +10,9 @@ import java.util.Date;
  * Created by Isaque on 12-Jul-16.
  */
 public class TimeInput implements Comparable<TimeInput> {
-
-    private Date dataCriacao;
     private long timestamp;
     private long time = 0;
     private Atividade atvPai;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     private TimeInput() {}
 
@@ -26,19 +24,28 @@ public class TimeInput implements Comparable<TimeInput> {
 
     @Override
     public String toString() {
-        return "Time input com duração de " + Float.toString(time) + " horas, criado em: " + dateFormat.format(dataCriacao); //2014/08/06 15:59:48;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return "Time input com duração de " + Float.toString(time) + " horas, criado em: " + dateFormat.format(getDataCriacao()); //2014/08/06 15:59:48;
     }
 
     //Getters and Setters
-    public Date getDataCriacao() { return dataCriacao; }
+    @Exclude
+    public Date getDataCriacao() { return new Date(this.timestamp); }
 
     public long getTime() { return time;  }
 
+    public Long getTimestamp() {
+        return this.timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
 
     public Atividade getAtvPai() { return atvPai; }
 
+    @Exclude
     public void setDataCriacao(Date dataCriacao) {
-        this.dataCriacao = dataCriacao;
         this.timestamp = dataCriacao.getTime();
     }
 
