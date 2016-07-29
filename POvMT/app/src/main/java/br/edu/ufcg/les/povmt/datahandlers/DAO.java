@@ -64,6 +64,11 @@ public class DAO {
         createUserData();
     }
 
+
+    /**
+     * SINGLETON, recupera a instância do DB
+     * @return a instância do DB
+     */
     public static DAO getInstance() {
         if (dao == null)
             dao = new DAO();
@@ -95,6 +100,10 @@ public class DAO {
         });
     }
 
+    /**
+     * Adiciona uma nova Atividade a lista de Atividades
+     * @param atividade A Atividade
+     */
     public void add(Atividade atividade) {
         Map<String, Atividade> atividades = userData.getAtividades();
 
@@ -104,6 +113,10 @@ public class DAO {
         }
     }
 
+    /**
+     * Adiciona uma nova TimeInput a lista de TimeInputs
+     * @param ti A TimeInput
+     */
     public void add(TimeInput ti) {
         Map<String, TimeInput> timeInputs = userData.getTimeInputs();
 
@@ -113,6 +126,14 @@ public class DAO {
         }
     }
 
+    /**
+     * Equivalente a getAtividade(String atvNome).
+     * IMPORTANTE: Alterar um objeto Atividade não altera as TimeInputs que tem ele como Pai.
+     * Se quiser alterar uma Atividade use updateAtividade(Atividade antiga, Atividade nova).
+     *      *
+     * @param atv A Atividade
+     * @return A Atividade
+     */
     public Atividade getAtividade(Atividade atv) {
         if (atv != null)
             return getAtividade(atv.getName());
@@ -120,6 +141,11 @@ public class DAO {
         return null;
     }
 
+    /**
+     * Recupera um objeto Atividade que tem atvNome como Nome
+     * @param atvNome O nome da Atividade
+     * @return O objeto Atividade com o mesmo nome
+     */
     public Atividade getAtividade(String atvNome) {
         for (Atividade atv: userData.getAtividades().values()) {
             if (atv.getName().equals(atvNome)) {
@@ -130,6 +156,12 @@ public class DAO {
         return null;
     }
 
+    /**
+     * @param start A data inicial do intervalo.
+     * @param end A data final do intervalo (incluso)
+     * @param atv A Atividade pai
+     * @return Retorna todas as TimeInputs que tem atv como Atividade pai em um intervalo de tempo.
+     */
     public List<TimeInput> getTimeInputs(Date start, Date end, Atividade atv) {
         List<TimeInput> timeInputs = new ArrayList<>();
 
@@ -146,6 +178,15 @@ public class DAO {
         return timeInputs;
     }
 
+    /**
+     * TiViews são utilizadas para armazenar os dados necessários para exibir nas Views.
+     * Uma TiView é criada apartir das informações de uma Atividade e seus TimeInputs em um determinado intervalo de tempo
+     * Todas os TimeInputs de um intervalo são considerados, não importando a Atividade pai
+     * @param context O context da View que vai utilizar as TiViews
+     * @param start A data inicial do intervalo.
+     * @param end A data final do intervalo (incluso)
+     * @return Um List com todas as TiViews de start até end (incluso)
+     */
     public List<TiView> getTiViews(Context context, Date start, Date end) {
         List<TiView> tiViews = new ArrayList<>();
         Collection<Atividade> atividades = userData.getAtividades().values();
@@ -164,6 +205,10 @@ public class DAO {
         return tiViews;
     }
 
+    /**
+     * @param timeInputs Lista de TimeInputs
+     * @return A soma de todos os minutos em timeInputs
+     */
     public static Long getTotalMinutes(List<TimeInput> timeInputs) {
         Long totalMinutes = 0L;
 
@@ -174,23 +219,49 @@ public class DAO {
         return totalMinutes;
     }
 
+    /**
+     * @param minutes Minutos
+     * @return Retorna as horas COMPLETAS que minutes tem.
+     */
     public static Long getHours(Long minutes) {
         return minutes/60;
     }
 
+    /**
+     * NECESSÁRIO para atualizar o Banco de dados.
+     * Este método é separado para questões de uso dos dados. Permitir que os dados sejam enviados em blocos.
+     */
     public void update() {
         if (userData != null)
             firebaseRef.setValue(userData);
     }
 
+    /**
+     * Adiciona Um Listener ao DB. Um Listener é chamado quando alguma alteração é detectada no Banco de dados.
+     * @param listener O objeto que será usado sempre que houver uma modificação no DB
+     */
     public void addListener(ValueEventListener listener) {
         this.listeners.add(firebaseRef.addValueEventListener(listener));
     }
 
+    /**
+     * @return Retorna o Uid do usuário que está logado
+     */
     public String getUid() {
         return userData.getUid();
     }
 
+    /**
+     * @return Retorna o nome do usuário que está logado
+     */
+    public String getUserName() { return userData.getNome(); }
+
+    /**
+     * Retorna uma lista de Atividades que começam com text. Utilizado no campo de autofill.
+     * NÂO É CASE SENSITIVE
+     * @param text texto que deve ter no início das Atividades
+     * @return A lista de atividades que começam com text.
+     */
     public List<Atividade> getAtividadesStartingWith(String text) {
         List<Atividade> atividades = new ArrayList<>();
 
@@ -202,6 +273,10 @@ public class DAO {
         return atividades;
     }
 
+    /**
+     * Todos os TimeInputs que tiverem atv como Atividade pai serão removidos.
+     * @param atv Atividade pai
+     */
     public void removeTimeInputs(Atividade atv) {
         if (atv == null) return;
 
@@ -215,6 +290,12 @@ public class DAO {
         }
     }
 
+    /**
+     * Remove uma Atividade da lista de Atividade.
+     * TODAS os TimeInputs que têm atv como Atividade pai também serão removidos.
+     *
+     * @param atv A Atividade
+     */
     public void removeAtividade(Atividade atv) {
         if (atv == null) return;
 
@@ -229,6 +310,10 @@ public class DAO {
         }
     }
 
+    /**
+     * Remove um TimeInput da lista de TimeInputs
+     * @param ti O TimeInput
+     */
     public void removeTimeInput(TimeInput ti) {
         if (ti == null) return;
 
@@ -241,6 +326,13 @@ public class DAO {
         }
     }
 
+    /**
+     * Atualiza a Atividade antiga e todas os TimeInputs que tem ela como Atividade Pai.
+     * Se a nova Atividade tiver um nome diferente da atividade antiga, mas Ja existir outra atividade com este nome,
+     * o update nao sera possivel, nada acontece.
+     * @param antiga Um objeto igual a atividade antiga, veja dao.getAtividade() para referencia.
+     * @param nova Um objeto com as novas informacoes.
+     */
     public void updateAtividade(Atividade antiga, Atividade nova) {
         Atividade atividade = getAtividade(antiga);
 
