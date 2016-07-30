@@ -106,18 +106,18 @@ public class TabFragment1 extends Fragment {
 
 
     public void addTis(int priority) {
-        AtividadeView ti = new AtividadeView(getContext());
+        AtividadeView atView = new AtividadeView(getContext());
         String h = edtH.getText().toString();
         String m = edtM.getText().toString();
         if (h.equals("")) h = "0";
         if (m.equals("")) m = "0";
-        ti.set(h, m, edtDesc.getText().toString(), priority);
+        atView.set(h, m, edtDesc.getText().toString(), priority);
 
-        Atividade atv = dao.getAtividade(ti.getTxtName().getText() + "");
+        Atividade atv = dao.getAtividade(atView.getTxtName().getText() + "");
         if (atv == null) {
             atv = new Atividade();
-            atv.setName(ti.getTxtName().getText() + "");
-            atv.setPriority(ti.getPriorityId());
+            atv.setName(atView.getTxtName().getText() + "");
+            atv.setPriority(atView.getPriorityId());
 
         }
 
@@ -129,7 +129,9 @@ public class TabFragment1 extends Fragment {
         dao.add(timeInput);
         dao.update();
 
-        mAdapter.add(ti);
+        atView.setAtividade(atv);
+
+        mAdapter.add(atView);
     }
 
 

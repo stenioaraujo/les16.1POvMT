@@ -4,11 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
@@ -17,33 +14,21 @@ import br.edu.ufcg.les.povmt.datahandlers.DAO;
  * Created by Victor on 16-Jul-16.
  */
 public class TimeInputView extends RelativeLayout implements Comparable<TimeInputView> {
-    private TextView txtPercent;
     private TextView txtHour;
+    private View btDelete;
+    private View txtTime;
     private TextView txtMin;
-    private TextView txtName;
-    private FrameLayout progress;
-    private View btEdit;
-    private FrameLayout priority;
-    private int percent;
-    private int priorityId;
-    private List<TimeInput> timeInputs;
-    private Atividade atividade;
+    private TimeInput ti;
 
     public TimeInputView(Context context) {
         super(context, null);
         init(context);
     }
 
-    public TimeInputView(Context context, String hour, String min, String name, int priority) {
+    public TimeInputView(Context context, TimeInput ti) {
         super(context, null);
+        this.ti = ti;
         init(context);
-        set(hour,min,name,priority);
-    }
-
-    public TimeInputView(Context context, String hour, String min, Atividade atividade, List<TimeInput> timeInputs) {
-        super(context, null);
-        init(context);
-        set(hour, min, atividade, timeInputs);
     }
 
     public TimeInputView(Context context, AttributeSet attrs) {
@@ -59,52 +44,25 @@ public class TimeInputView extends RelativeLayout implements Comparable<TimeInpu
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View root = inflater.inflate(R.layout.ti_recycler_item, this, true);
+        View root = inflater.inflate(R.layout.time_input_recycler_item, this, true);
 
-        txtPercent = (TextView) root.findViewById(R.id.txt_percent);
         txtHour = (TextView) root.findViewById(R.id.txt_h);
         txtMin = (TextView) root.findViewById(R.id.txt_min);
-        txtName = (TextView) root.findViewById(R.id.txt_name);
-        progress = (FrameLayout) root.findViewById(R.id.progress);
-        btEdit = root.findViewById(R.id.bt_edit);
-        priority = (FrameLayout) root.findViewById(R.id.priority);
+        btDelete = root.findViewById(R.id.bt_edit);
+        txtTime = root.findViewById(R.id.txt_time);
+
     }
 
-    public void set( String hour, String min, String name, int priority) {
-        //txtPercent.setText(percent + "");
-        txtHour.setText(hour);
-        txtMin.setText(min);
-        txtName.setText(name);
-        //this.percent = percent;
-        priorityId = priority;
+
+    public int getTimeToMin(){
+        try {
+            return Integer.parseInt(txtHour.getText() + "")*60 + Integer.parseInt(txtMin.getText() + "");
+        }catch(NumberFormatException e){
+            return 0;
+        }
     }
 
-    public void set(String hour, String min, Atividade atv, List<TimeInput> timeInputs) {
-        txtHour.setText(hour);
-        txtMin.setText(min);
-        txtName.setText(atv.getName());
-        priorityId = atv.getPriority();
-    }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        ViewGroup.LayoutParams lp = progress.getLayoutParams();
-//        lp.width = (int) (progress.getWidth() * percent / 100.0f);
-//        Log.d("tivew", progress.getWidth()+" --- "+lp.width + " --- "+ percent );
-//        progress.setLayoutParams(lp);
-//        progress.invalidate();
-//        progress.requestLayout();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasWindowFocus) {
-        super.onWindowFocusChanged(hasWindowFocus);
-    }
-
-    public TextView getTxtPercent() {
-        return txtPercent;
-    }
 
     public TextView getTxtHour() {
         return txtHour;
@@ -112,30 +70,6 @@ public class TimeInputView extends RelativeLayout implements Comparable<TimeInpu
 
     public TextView getTxtMin() {
         return txtMin;
-    }
-
-    public TextView getTxtName() {
-        return txtName;
-    }
-
-    public FrameLayout getProgress() {
-        return progress;
-    }
-
-    public View getBtEdit() {
-        return btEdit;
-    }
-
-    public View getPriority() {
-        return priority;
-    }
-
-    public int getPercent() {
-        return percent;
-    }
-
-    public void setTxtPercent(TextView txtPercent) {
-        this.txtPercent = txtPercent;
     }
 
     public void setTxtHour(TextView txtHour) {
@@ -146,40 +80,28 @@ public class TimeInputView extends RelativeLayout implements Comparable<TimeInpu
         this.txtMin = txtMin;
     }
 
-    public void setTxtName(TextView txtName) {
-        this.txtName = txtName;
+    public View getBtDelete() {
+        return btDelete;
     }
 
-    public void setProgress(FrameLayout progress) {
-        this.progress = progress;
+    public void setBtDelete(View btEdit) {
+        this.btDelete = btEdit;
     }
 
-    public void setBtEdit(View btEdit) {
-        this.btEdit = btEdit;
+    public View getTxtTime() {
+        return txtTime;
     }
 
-    public void setPriority(FrameLayout priority) {
-        this.priority = priority;
+    public void setTxtTime(View txtTime) {
+        this.txtTime = txtTime;
     }
 
-    public void setPercent(int percent) {
-        this.percent = percent;
+    public TimeInput getTi() {
+        return ti;
     }
 
-    public int getPriorityId() {
-        return priorityId;
-    }
-
-    public void setPriorityId(int priorityId) {
-        this.priorityId = priorityId;
-    }
-
-    public int getTimeToMin(){
-        try {
-            return Integer.parseInt(txtHour.getText() + "")*60 + Integer.parseInt(txtMin.getText() + "");
-        }catch(NumberFormatException e){
-            return 0;
-        }
+    public void setTi(TimeInput ti) {
+        this.ti = ti;
     }
 
     public void increment(Long minutes) {

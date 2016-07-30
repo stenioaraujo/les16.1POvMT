@@ -37,8 +37,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
 
     @Override
     public AtividadeRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-//        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.ti_recycler_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
+
         return new ViewHolder(new AtividadeView(parent.getContext()));
     }
 
