@@ -2,12 +2,10 @@ package br.edu.ufcg.les.povmt.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import br.edu.ufcg.les.povmt.R;
-import br.edu.ufcg.les.povmt.adapters.TiRecyclerAdapter;
+import br.edu.ufcg.les.povmt.adapters.AtividadeRecyclerAdapter;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
-import br.edu.ufcg.les.povmt.models.TiView;
+import br.edu.ufcg.les.povmt.models.AtividadeView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 
 /**
@@ -36,7 +31,7 @@ import br.edu.ufcg.les.povmt.models.TimeInput;
 public class TabFragment1 extends Fragment {
     RecyclerView mRecycler;
     private Atividade atividade;
-    public TiRecyclerAdapter mAdapter;
+    public AtividadeRecyclerAdapter mAdapter;
     View rootView;
     private EditText edtDesc;
     private EditText edtH;
@@ -56,22 +51,22 @@ public class TabFragment1 extends Fragment {
 
 /*
         atividade = new Atividade();
-        ArrayList<TiView> tis = new ArrayList<TiView>();
-        tis.add(new TiView(getContext(), "6", "29", "Les", 2));
-        tis.add(new TiView(getContext(), "4", "30", "Empsoft", 1));
-        tis.add(new TiView(getContext(), "3", "54", "So", 0));
-        tis.add(new TiView(getContext(), "2", "10", "Irc", 0));
-        tis.add(new TiView(getContext(), "10", "45", "Festar", 2));
+        ArrayList<AtividadeView> tis = new ArrayList<AtividadeView>();
+        tis.add(new AtividadeView(getContext(), "6", "29", "Les", 2));
+        tis.add(new AtividadeView(getContext(), "4", "30", "Empsoft", 1));
+        tis.add(new AtividadeView(getContext(), "3", "54", "So", 0));
+        tis.add(new AtividadeView(getContext(), "2", "10", "Irc", 0));
+        tis.add(new AtividadeView(getContext(), "10", "45", "Festar", 2));
 */
 
         dao = DAO.getInstance();
-        List<TiView> tis = dao.getTiViews(getContext(), new Date(0), new Date());
+        List<AtividadeView> tis = dao.getAtividadeViews(getContext(), new Date(0), new Date());
 
         mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         // use a linear layout manager
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mRecycler.setLayoutManager(mLayoutManager);
-        mAdapter = new TiRecyclerAdapter(tis, this);
+        mAdapter = new AtividadeRecyclerAdapter(tis, this);
         mRecycler.setAdapter(mAdapter);
 
         hora = (TextView) rootView.findViewById(R.id.textViewTempoInvestidoHora);
@@ -117,7 +112,7 @@ public class TabFragment1 extends Fragment {
 
 
     public void addTis(int priority) {
-        TiView ti = new TiView(getContext());
+        AtividadeView ti = new AtividadeView(getContext());
         String h = edtH.getText().toString();
         String m = edtM.getText().toString();
         if (h.equals("")) h = "0";
@@ -150,15 +145,15 @@ public class TabFragment1 extends Fragment {
 
     }
 
-    private int calcMin(List<TiView> mDataset) {
+    private int calcMin(List<AtividadeView> mDataset) {
         int totalMin = 0;
-        for (TiView ti : mDataset) {
+        for (AtividadeView ti : mDataset) {
             totalMin += ti.getTimeToMin();
         }
         return totalMin;
     }
 
-    public void atualizarTempoInvestido(List<TiView> tis){
+    public void atualizarTempoInvestido(List<AtividadeView> tis){
         hora.setText(String.valueOf(calcMin(tis) /60));
         int minutos = calcMin(tis) % 60;
         minuto.setText(String.valueOf(minutos));

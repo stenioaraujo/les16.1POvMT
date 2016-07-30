@@ -1,13 +1,20 @@
 package br.edu.ufcg.les.povmt.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.models.AtividadeView;
 
@@ -21,6 +28,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
     public AtividadeRecyclerAdapter(List<AtividadeView> data, TabFragment1 owner) {
         mDataset = data;
         Collections.sort(data);
+
 
         this.owner = owner;
         calcPercentage();
@@ -49,13 +57,6 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
             }
         });
 
-        holder.currentTi.getProgress().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
 
         switch (holder.currentTi.getPriorityId()) {
             case 0:
@@ -76,7 +77,6 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         holder.currentTi.getProgress().setLayoutParams(lp);
         holder.currentTi.getProgress().invalidate();
         holder.currentTi.getProgress().requestLayout();
-
     }
 
     @Override
@@ -94,7 +94,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         }
     }
 
-    public int getPosTiView(String atvName) {
+    public int getPosAtividadeView(String atvName) {
         for (int i = 0; i < mDataset.size(); i++) {
             String txtName = mDataset.get(i).getTxtName().getText() + "";
             if (txtName.equals(atvName))
@@ -105,35 +105,52 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
     }
 
     public void add(AtividadeView item) {
-        int pos = getPosTiView(item.getTxtName().getText() + "");
+        int pos = getPosAtividadeView(item.getTxtName().getText() + "");
 
         if (pos == -1) {
             add(mDataset.size(), item);
         } else {
             AtividadeView tiv = mDataset.get(pos);
             tiv.increment((long) item.getTimeToMin());
-            update(pos);
+            update();
         }
     }
 
     public void add(int position, AtividadeView item) {
-//        for (AtividadeView av: mDataset) {
-//            if(av.getTxtName().getText().equals(item.getTxtName().getText())){
-//                av.set
-//            }
-//        }
         mDataset.add(position, item);
-        update(position);
+        update();
     }
 
-    public void update(int position) {
+    public void update() {
         Collections.sort(mDataset);
 
         calcPercentage();
-        notifyItemInserted(position);
         notifyDataSetChanged();
     }
 
+    public void addDBListener() {
+        final DAO dao = DAO.getInstance();
+        dao.addListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //TODO essa parte aqui tem que pegar um limite de tempo, nao sei qual
+                try {
+                    mDataset = dao.getAtividadeViews(owner.getContext(), new Date(0), new Date());
+                    owner.atualizarTempoInvestido(mDataset);
+                    update();
+
+                    Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void remove(AtividadeView item) {
         int position = mDataset.indexOf(item);
@@ -164,14 +181,14 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
 
     private void calcPercentage() {
         int totalMin = 0;
-        for (AtividadeView ti: mDataset) {
+        for (AtividadeView ti : mDataset) {
             totalMin += ti.getTimeToMin();
         }
-        for (AtividadeView ti: mDataset) {
+        for (AtividadeView ti : mDataset) {
             if (totalMin == 0) break;
 
-            ti.setPercent(((ti.getTimeToMin()*100)/totalMin));
-            ti.getTxtPercent().setText(ti.getPercent()+"");
+            ti.setPercent(((ti.getTimeToMin() * 100) / totalMin));
+            ti.getTxtPercent().setText(ti.getPercent() + "");
         }
     }
 

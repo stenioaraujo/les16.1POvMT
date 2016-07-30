@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
-import br.edu.ufcg.les.povmt.models.TiView;
+import br.edu.ufcg.les.povmt.models.AtividadeView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 import br.edu.ufcg.les.povmt.models.UserData;
 
@@ -179,16 +179,16 @@ public class DAO {
     }
 
     /**
-     * TiViews são utilizadas para armazenar os dados necessários para exibir nas Views.
-     * Uma TiView é criada apartir das informações de uma Atividade e seus TimeInputs em um determinado intervalo de tempo
+     * AtividadeViews são utilizadas para armazenar os dados necessários para exibir nas Views.
+     * Uma AtividadeView é criada apartir das informações de uma Atividade e seus TimeInputs em um determinado intervalo de tempo
      * Todas os TimeInputs de um intervalo são considerados, não importando a Atividade pai
-     * @param context O context da View que vai utilizar as TiViews
+     * @param context O context da View que vai utilizar as AtividadeViews
      * @param start A data inicial do intervalo.
      * @param end A data final do intervalo (incluso)
-     * @return Um List com todas as TiViews de start até end (incluso)
+     * @return Um List com todas as AtividadeViews de start até end (incluso)
      */
-    public List<TiView> getTiViews(Context context, Date start, Date end) {
-        List<TiView> tiViews = new ArrayList<>();
+    public List<AtividadeView> getAtividadeViews(Context context, Date start, Date end) {
+        List<AtividadeView> AtividadeViews = new ArrayList<>();
         Collection<Atividade> atividades = userData.getAtividades().values();
 
         for (Atividade atv: atividades) {
@@ -198,11 +198,11 @@ public class DAO {
             String hours = getHours(minutes).toString();
             String min = String.valueOf((minutes - getHours(minutes)*60));
 
-            TiView tiView = new TiView(context, hours, min, atv, timeInputs);
-            tiViews.add(tiView);
+            AtividadeView AtividadeView = new AtividadeView(context, hours, min, atv, timeInputs);
+            AtividadeViews.add(AtividadeView);
         }
 
-        return tiViews;
+        return AtividadeViews;
     }
 
     /**
