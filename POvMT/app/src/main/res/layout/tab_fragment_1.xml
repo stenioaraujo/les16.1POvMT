@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
     <TextView
         android:id="@+id/textViewStringTempo"
@@ -48,16 +49,16 @@
             android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/linearLayout2"
-        android:text="@string/filtrar"
-        android:textColor="@android:color/white"
-        android:backgroundTint="#2196f3"
-        android:id="@+id/button_filtrar"
-        android:textSize="16dp" />
+    <!--<Button-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@id/linearLayout2"-->
+        <!--android:text="@string/filtrar"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:backgroundTint="#2196f3"-->
+        <!--android:id="@+id/button_filtrar"-->
+        <!--android:textSize="16dp" />-->
 
 
 
@@ -65,9 +66,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler"
-        android:layout_below="@+id/button_filtrar"
+        android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/frameLayout" />
+        android:layout_above="@+id/frameLayout"
+        android:background="@android:color/white"/>
+
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -88,7 +99,7 @@
             android:layout_alignEnd="@+id/textViewStringTempo"
             android:layout_gravity="center_horizontal">
 
-            <EditText
+            <AutoCompleteTextView
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/edtDesc"

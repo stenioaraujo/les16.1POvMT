@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -137,6 +138,11 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
                 try {
                     mDataset = dao.getAtividadeViews(owner.getContext(), new Date(0), new Date());
                     owner.atualizarTempoInvestido(mDataset);
+                    List<String> names = new ArrayList<String>();
+                    for (AtividadeView av : mDataset) {
+                        names.add(av.getTxtName().getText()+"");
+                    }
+                    owner.updateAutoComplete(names);
                     update();
 
                     Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());

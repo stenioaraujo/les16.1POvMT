@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,7 +35,7 @@ public class TabFragment1 extends Fragment {
     private Atividade atividade;
     public AtividadeRecyclerAdapter mAdapter;
     View rootView;
-    private EditText edtDesc;
+    private AutoCompleteTextView edtDesc;
     private EditText edtH;
     private EditText edtM;
     private DAO dao;
@@ -41,23 +43,15 @@ public class TabFragment1 extends Fragment {
     private TextView hora;
     private TextView minuto;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.tab_fragment_1, container, false);
 
-        edtDesc = (EditText) rootView.findViewById(R.id.edtDesc);
+        edtDesc = (AutoCompleteTextView) rootView.findViewById(R.id.edtDesc);
         edtH = (EditText) rootView.findViewById(R.id.edtH);
         edtM = (EditText) rootView.findViewById(R.id.edtM);
 
-/*
-        atividade = new Atividade();
-        ArrayList<AtividadeView> tis = new ArrayList<AtividadeView>();
-        tis.add(new AtividadeView(getContext(), "6", "29", "Les", 2));
-        tis.add(new AtividadeView(getContext(), "4", "30", "Empsoft", 1));
-        tis.add(new AtividadeView(getContext(), "3", "54", "So", 0));
-        tis.add(new AtividadeView(getContext(), "2", "10", "Irc", 0));
-        tis.add(new AtividadeView(getContext(), "10", "45", "Festar", 2));
-*/
 
         dao = DAO.getInstance();
         List<AtividadeView> tis = dao.getAtividadeViews(getContext(), new Date(0), new Date());
@@ -84,13 +78,13 @@ public class TabFragment1 extends Fragment {
         });
 
 
-        buttonFiltrar = (Button) rootView.findViewById(R.id.button_filtrar);
-        buttonFiltrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFiltrarDialog();
-            }
-        });
+//        buttonFiltrar = (Button) rootView.findViewById(R.id.button_filtrar);
+//        buttonFiltrar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showFiltrarDialog();
+//            }
+//        });
 
         return rootView;
     }
@@ -165,6 +159,13 @@ public class TabFragment1 extends Fragment {
 
     public void setAtividade(Atividade atividade) {
         this.atividade = atividade;
+    }
+
+    public void updateAutoComplete(List<String> names){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,names);
+        edtDesc.setAdapter(adapter);
+        rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
+
     }
 
 }
