@@ -54,8 +54,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
 
     private Date lastLogin;
-    private UserData usuario
-            ;
+    private UserData usuario;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -143,7 +142,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             this.dao = DAO.getInstance();
-            DBSPopulater.populateBD();
+            dao.initialize();
+
+            //DBSPopulater.populateBD();
 
             setUserInfo();
         }

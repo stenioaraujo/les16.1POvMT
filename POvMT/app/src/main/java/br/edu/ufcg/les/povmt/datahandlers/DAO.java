@@ -12,8 +12,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -29,27 +32,43 @@ public class DAO {
     private UserData userData;
     private FirebaseUser mFirebaseUser;
     private String uid;
-    private ValueEventListener listener;
+    private Set<ValueEventListener> listeners;
     private static DAO dao;
 
     private DAO() {
+        this.firebaseRef = FirebaseDatabase.getInstance().getReference();
+
+        this.listeners = new HashSet<ValueEventListener>();
 
         initialize();
-
-        this.firebaseRef = FirebaseDatabase.getInstance().getReference();
-        this.firebaseRef = firebaseRef.child("users").child(userData.getUid());
-
-        this.listener = addListenerFirebase();
     }
 
-    private void initialize() {
-        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
+    private void createUserData() {
         userData = new UserData(mFirebaseUser.getUid());
-        userData.setLastLogin(new Date());
         userData.setNome(mFirebaseUser.getDisplayName());
     }
 
+    public void initialize() {
+        for(ValueEventListener listener: listeners) {
+            firebaseRef.removeEventListener(listener);
+        }
+
+        mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        firebaseRef = FirebaseDatabase.getInstance().getReference();
+        firebaseRef = firebaseRef.child("users").child(mFirebaseUser.getUid());
+
+        this.listeners = new HashSet<ValueEventListener>();
+        listeners.add(addListenerFirebase());
+
+        createUserData();
+    }
+
+
+    /**
+     * SINGLETON, recupera a instância do DB
+     * @return a instância do DB
+     */
     public static DAO getInstance() {
         if (dao == null)
             dao = new DAO();
@@ -59,6 +78,7 @@ public class DAO {
 
     private ValueEventListener addListenerFirebase() {
         return firebaseRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
@@ -67,9 +87,9 @@ public class DAO {
                     if (newUserData != null)
                         userData = newUserData;
 
-                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + userData.getUid());
+                    Log.v("DB_UPDATED", "Acabei de ser modificado por " + mFirebaseUser.getDisplayName() + " " + mFirebaseUser.getUid());
                 } catch (Throwable t) {
-                    Log.e("DB_ERROR", t.getMessage());
+                    Log.e("DB_ERROR", t.getMessage() + "");
                 }
             }
 
@@ -80,28 +100,54 @@ public class DAO {
         });
     }
 
+    /**
+     * Adiciona uma nova Atividade a lista de Atividades
+     * @param atividade A Atividade
+     */
     public void add(Atividade atividade) {
-        List<Atividade> atividades = userData.getAtividades();
+        Map<String, Atividade> atividades = userData.getAtividades();
 
-        if (!atividades.contains(atividade)) {
-            atividades.add(atividade);
+        if (!atividades.values().contains(atividade)) {
+            String key = firebaseRef.child("atividades").push().getKey();
+            atividades.put(key, atividade);
         }
     }
 
+    /**
+     * Adiciona uma nova TimeInput a lista de TimeInputs
+     * @param ti A TimeInput
+     */
     public void add(TimeInput ti) {
-        List<TimeInput> timeInputs = userData.getTimeInputs();
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
 
-        if (!timeInputs.contains(ti)) {
-            timeInputs.add(ti);
+        if (!timeInputs.values().contains(ti)) {
+            String key = firebaseRef.child("timeInputs").push().getKey();
+            timeInputs.put(key, ti);
         }
     }
 
+    /**
+     * Equivalente a getAtividade(String atvNome).
+     * IMPORTANTE: Alterar um objeto Atividade não altera as TimeInputs que tem ele como Pai.
+     * Se quiser alterar uma Atividade use updateAtividade(Atividade antiga, Atividade nova).
+     *      *
+     * @param atv A Atividade
+     * @return A Atividade
+     */
     public Atividade getAtividade(Atividade atv) {
-        return getAtividade(atv.getName());
+        if (atv != null)
+            return getAtividade(atv.getName());
+
+        return null;
     }
 
+    /**
+     * Recupera um objeto Atividade que tem atvNome como Nome
+     * @param atvNome O nome da Atividade
+     * @return O objeto Atividade com o mesmo nome
+     */
     public Atividade getAtividade(String atvNome) {
-        for (Atividade atv: userData.getAtividades()) {
+        for (Atividade atv: userData.getAtividades().values()) {
             if (atv.getName().equals(atvNome)) {
                 return atv;
             }
@@ -110,14 +156,18 @@ public class DAO {
         return null;
     }
 
+    /**
+     * @param start A data inicial do intervalo.
+     * @param end A data final do intervalo (incluso)
+     * @param atv A Atividade pai
+     * @return Retorna todas as TimeInputs que tem atv como Atividade pai em um intervalo de tempo.
+     */
     public List<TimeInput> getTimeInputs(Date start, Date end, Atividade atv) {
         List<TimeInput> timeInputs = new ArrayList<>();
 
-        StringBuffer bf = new StringBuffer();
-        for (TimeInput ti: userData.getTimeInputs()) {
+        for (TimeInput ti: userData.getTimeInputs().values()) {
             Date criado = ti.getDataCriacao();
             if (ti.getAtvPai().equals(atv)) {
-                bf.append(atv.getName() + "\n");
                 if (criado.after(start) && criado.before(end) ||
                         criado.equals(start) || criado.equals(end)) {
                     timeInputs.add(ti);
@@ -128,9 +178,18 @@ public class DAO {
         return timeInputs;
     }
 
+    /**
+     * TiViews são utilizadas para armazenar os dados necessários para exibir nas Views.
+     * Uma TiView é criada apartir das informações de uma Atividade e seus TimeInputs em um determinado intervalo de tempo
+     * Todas os TimeInputs de um intervalo são considerados, não importando a Atividade pai
+     * @param context O context da View que vai utilizar as TiViews
+     * @param start A data inicial do intervalo.
+     * @param end A data final do intervalo (incluso)
+     * @return Um List com todas as TiViews de start até end (incluso)
+     */
     public List<TiView> getTiViews(Context context, Date start, Date end) {
         List<TiView> tiViews = new ArrayList<>();
-        List<Atividade> atividades = userData.getAtividades();
+        Collection<Atividade> atividades = userData.getAtividades().values();
 
         for (Atividade atv: atividades) {
             List<TimeInput> timeInputs = getTimeInputs(start, end, atv);
@@ -146,6 +205,10 @@ public class DAO {
         return tiViews;
     }
 
+    /**
+     * @param timeInputs Lista de TimeInputs
+     * @return A soma de todos os minutos em timeInputs
+     */
     public static Long getTotalMinutes(List<TimeInput> timeInputs) {
         Long totalMinutes = 0L;
 
@@ -156,11 +219,142 @@ public class DAO {
         return totalMinutes;
     }
 
+    /**
+     * @param minutes Minutos
+     * @return Retorna as horas COMPLETAS que minutes tem.
+     */
     public static Long getHours(Long minutes) {
         return minutes/60;
     }
 
+    /**
+     * NECESSÁRIO para atualizar o Banco de dados.
+     * Este método é separado para questões de uso dos dados. Permitir que os dados sejam enviados em blocos.
+     */
     public void update() {
-        firebaseRef.setValue(userData);
+        if (userData != null)
+            firebaseRef.setValue(userData);
+    }
+
+    /**
+     * Adiciona Um Listener ao DB. Um Listener é chamado quando alguma alteração é detectada no Banco de dados.
+     * @param listener O objeto que será usado sempre que houver uma modificação no DB
+     */
+    public void addListener(ValueEventListener listener) {
+        this.listeners.add(firebaseRef.addValueEventListener(listener));
+    }
+
+    /**
+     * @return Retorna o Uid do usuário que está logado
+     */
+    public String getUid() {
+        return userData.getUid();
+    }
+
+    /**
+     * @return Retorna o nome do usuário que está logado
+     */
+    public String getUserName() { return userData.getNome(); }
+
+    /**
+     * Retorna uma lista de Atividades que começam com text. Utilizado no campo de autofill.
+     * NÂO É CASE SENSITIVE
+     * @param text texto que deve ter no início das Atividades
+     * @return A lista de atividades que começam com text.
+     */
+    public List<Atividade> getAtividadesStartingWith(String text) {
+        List<Atividade> atividades = new ArrayList<>();
+
+        for (Atividade atv: userData.getAtividades().values()) {
+            if (text == null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
+                atividades.add(atv);
+        }
+
+        return atividades;
+    }
+
+    /**
+     * Todos os TimeInputs que tiverem atv como Atividade pai serão removidos.
+     * @param atv Atividade pai
+     */
+    public void removeTimeInputs(Atividade atv) {
+        if (atv == null) return;
+
+        Map<String, TimeInput> tis = userData.getTimeInputs();
+        Set<String> tiIDs = new HashSet<>(tis.keySet());
+
+        for (String tiID: tiIDs) {
+            if (tis.get(tiID) != null && atv.equals(tis.get(tiID).getAtvPai())) {
+                tis.remove(tiID);
+            }
+        }
+    }
+
+    /**
+     * Remove uma Atividade da lista de Atividade.
+     * TODAS os TimeInputs que têm atv como Atividade pai também serão removidos.
+     *
+     * @param atv A Atividade
+     */
+    public void removeAtividade(Atividade atv) {
+        if (atv == null) return;
+
+        removeTimeInputs(atv);
+
+        Map<String, Atividade> atividades = userData.getAtividades();
+        Set<String> atvIDs = new HashSet<>(atividades.keySet());
+        for(String atvID: atvIDs) {
+            if (atv.equals(atividades.get(atvID))) {
+                atividades.remove(atvID);
+            }
+        }
+    }
+
+    /**
+     * Remove um TimeInput da lista de TimeInputs
+     * @param ti O TimeInput
+     */
+    public void removeTimeInput(TimeInput ti) {
+        if (ti == null) return;
+
+        Map<String, TimeInput> timeInputs = userData.getTimeInputs();
+        Set<String> tiIDs = new HashSet<>(timeInputs.keySet());
+        for(String tiID: tiIDs) {
+            if (ti.equals(timeInputs.get(tiID))) {
+                timeInputs.remove(tiID);
+            }
+        }
+    }
+
+    /**
+     * Atualiza a Atividade antiga e todas os TimeInputs que tem ela como Atividade Pai.
+     * Se a nova Atividade tiver um nome diferente da atividade antiga, mas Ja existir outra atividade com este nome,
+     * o update nao sera possivel, nada acontece.
+     * @param antiga Um objeto igual a atividade antiga, veja dao.getAtividade() para referencia.
+     * @param nova Um objeto com as novas informacoes.
+     */
+    public void updateAtividade(Atividade antiga, Atividade nova) {
+        Atividade atividade = getAtividade(antiga);
+
+        if (antiga != null && nova != null) {
+            if (!nova.getName().equals(antiga.getName())
+                    && getAtividade(nova.getName()) != null) {
+                Log.v("ATIVIDADE_UPDATE_ERROR", "Vc esta tentando renomear " +
+                        antiga.getName() + " para " + nova.getName() + ", mas " + nova.getName() +
+                        " ja existe");
+                return;
+            }
+
+            List<TimeInput> timeInputsAtividade = getTimeInputs(new Date(0), new Date(), antiga);
+
+            atividade.setName(nova.getName());
+            atividade.setPriority(nova.getPriority());
+            atividade.setDescription(nova.getDescription());
+            atividade.setTipoAtividade(nova.getTipoAtividade());
+
+            for (TimeInput ti: timeInputsAtividade) {
+                ti.setAtvPai(atividade);
+            }
+        }
     }
 }

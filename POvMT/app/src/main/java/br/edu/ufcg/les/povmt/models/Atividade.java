@@ -9,23 +9,20 @@ import java.util.Set;
  * Created by Isaque on 12-Jul-16.
  */
 public class Atividade {
-
     private String name;
     private String description;
     private int priority;
-    private float totalTime;
+    private String tipoAtividade;
 
     public Atividade(){
         this.name = "Lorem";
         this.description = "Ipsum";
         this.priority = Prioridades.MEDIUM;
+        this.tipoAtividade = TipoAtividade.TRABALHO;
     }
 
 
     //Getters and Setters
-    public float getTotalTime() {
-        return totalTime;
-    }
 
     public int getPriority() {
         return priority;
@@ -48,12 +45,16 @@ public class Atividade {
         this.description = description;
     }
 
-    public void setTotalTime(float totalTime) {
-        this.totalTime = totalTime;
-    }
-
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getTipoAtividade() {
+        return tipoAtividade;
+    }
+
+    public void setTipoAtividade(String tipoAtividade) {
+        this.tipoAtividade = tipoAtividade;
     }
 
     @Override
