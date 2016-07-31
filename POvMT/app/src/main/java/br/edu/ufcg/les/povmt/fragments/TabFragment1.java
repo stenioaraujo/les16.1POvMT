@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.adapters.AtividadeRecyclerAdapter;
@@ -42,6 +43,8 @@ public class TabFragment1 extends Fragment {
     private Button buttonFiltrar;
     private TextView hora;
     private TextView minuto;
+    private AtividadeView atv;
+    private int priority;
 
 
     @Override
@@ -73,7 +76,7 @@ public class TabFragment1 extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showEditDialog();
+                showEditDialog(0);
             }
         });
 
@@ -89,10 +92,30 @@ public class TabFragment1 extends Fragment {
         return rootView;
     }
 
-    public void showEditDialog() {
+    public void showEditDialog(AtividadeView atividade, int priority){
+        this.atv = atividade;
+        this.priority = priority;
+        showEditDialog(1);
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void showEditDialog(int edt) {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         AtividadeFormularioDialog editNameDialog = new AtividadeFormularioDialog();
         editNameDialog.setTabFragment1(this);
+        Bundle b = new Bundle();
+        b.putInt("editando", edt);
+        if(edt == 1){
+            b.putString("nome", atv.getTxtName().getText()+"");
+        }
+        editNameDialog.setArguments(b);
         editNameDialog.show(fm, "editNameDialog");
     }
 
@@ -105,7 +128,8 @@ public class TabFragment1 extends Fragment {
 
 
 
-    public void addTis(int priority) {
+    public void addTis(int priority , String nome ) {
+        if(atv == null){
         AtividadeView ti = new AtividadeView(getContext());
         String h = edtH.getText().toString();
         String m = edtM.getText().toString();
@@ -120,6 +144,7 @@ public class TabFragment1 extends Fragment {
             atv.setPriority(ti.getPriorityId());
 
         }
+        ti.setAtividade(atv);
 
         Long hora = Long.parseLong(h);
         Long min = Long.parseLong(m);
@@ -130,6 +155,46 @@ public class TabFragment1 extends Fragment {
         dao.update();
 
         mAdapter.add(ti);
+        edtDesc.setText("");
+        edtH.setText("");
+        edtM.setText("");
+        }else {
+            AtividadeView ti = new AtividadeView(getContext());
+            Atividade antiga = dao.getAtividade(atv.getTxtName().getText() + "");
+            String h = atv.getTxtHour().getText() + "";
+            String m = atv.getTxtMin().getText() + "";
+            ti.set(h, m, nome, priority);
+
+            Atividade atv = new Atividade();
+
+            atv.setName(ti.getTxtName().getText() + "");
+            atv.setPriority(ti.getPriorityId());
+            ti.setAtividade(atv);
+
+            Long hora = Long.parseLong(h);
+            Long min = Long.parseLong(m);
+            //TimeInput timeInput = new TimeInput(hora*60 + min, atv);
+
+            dao.updateAtividade(antiga, ti.getAtividade());
+            //dao.add(timeInput);
+            dao.update();
+
+            mAdapter.remove(this.atv);
+            mAdapter.add(ti);
+            edtDesc.setText("");
+            edtH.setText("");
+            edtM.setText("");
+        }
+    }
+
+    public void removeTis(){
+        if (atv.getAtividade() != null)dao.removeAtividade(atv.getAtividade());
+        else dao.removeAtividade(dao.getAtividade(atv.getTxtName().getText()+""));
+
+        mAdapter.remove(atv);
+        atv = null;
+        dao.update();
+
     }
 
 
@@ -161,11 +226,20 @@ public class TabFragment1 extends Fragment {
         this.atividade = atividade;
     }
 
+    public AtividadeView getAtv() {
+        return atv;
+    }
+
+    public void setAtv(AtividadeView atv) {
+        this.atv = atv;
+    }
+
     public void updateAutoComplete(List<String> names){
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,names);
         edtDesc.setAdapter(adapter);
         rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
 
     }
+
 
 }

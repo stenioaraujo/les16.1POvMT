@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -118,6 +119,9 @@ public class DAO {
      * @param ti A TimeInput
      */
     public void add(TimeInput ti) {
+        if(userData.getTimeInputs() == null){
+            userData.setTimeInputs(new HashMap<String, TimeInput>());
+        }
         Map<String, TimeInput> timeInputs = userData.getTimeInputs();
 
         if (!timeInputs.values().contains(ti)) {
@@ -189,6 +193,9 @@ public class DAO {
      */
     public List<AtividadeView> getAtividadeViews(Context context, Date start, Date end) {
         List<AtividadeView> AtividadeViews = new ArrayList<>();
+        if(userData.getAtividades() == null){
+            userData.setAtividades(new HashMap<String, Atividade>());
+        }
         Collection<Atividade> atividades = userData.getAtividades().values();
 
         for (Atividade atv: atividades) {

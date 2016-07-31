@@ -17,6 +17,7 @@ import br.edu.ufcg.les.povmt.models.AtividadeView;
 public class TimeInputRecyclerAdapter extends RecyclerView.Adapter<TimeInputRecyclerAdapter.ViewHolder> {
     private List<AtividadeView> mDataset;
     private TabFragment1 owner;
+    private int positoin;
 
     public TimeInputRecyclerAdapter(List<AtividadeView> data, TabFragment1 owner) {
         mDataset = data;
@@ -34,20 +35,16 @@ public class TimeInputRecyclerAdapter extends RecyclerView.Adapter<TimeInputRecy
     }
 
     @Override
-    public void onBindViewHolder(final TimeInputRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final TimeInputRecyclerAdapter.ViewHolder holder, final int position) {
         holder.currentTi.getTxtHour().setText(mDataset.get(position).getTxtHour().getText());
         holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
         holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
         holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
+        this.positoin = position;
 
-        holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                owner.showEditDialog();
-            }
-        });
+
 
         holder.currentTi.getProgress().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +73,13 @@ public class TimeInputRecyclerAdapter extends RecyclerView.Adapter<TimeInputRecy
         holder.currentTi.getProgress().setLayoutParams(lp);
         holder.currentTi.getProgress().invalidate();
         holder.currentTi.getProgress().requestLayout();
+        holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                owner.showEditDialog(holder.currentTi,holder.currentTi.getPriorityId() );
+
+            }
+        });
 
     }
 

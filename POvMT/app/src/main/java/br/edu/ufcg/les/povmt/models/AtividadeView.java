@@ -174,6 +174,14 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
         this.priorityId = priorityId;
     }
 
+    public Atividade getAtividade() {
+        return atividade;
+    }
+
+    public void setAtividade(Atividade atividade) {
+        this.atividade = atividade;
+    }
+
     public int getTimeToMin(){
         try {
             return Integer.parseInt(txtHour.getText() + "")*60 + Integer.parseInt(txtMin.getText() + "");
@@ -193,5 +201,25 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
     @Override
     public int compareTo(AtividadeView another) {
         return -1 * (this.getTimeToMin() - another.getTimeToMin());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if(o instanceof AtividadeView){
+            AtividadeView a = (AtividadeView) o;
+            if (a.getTxtName().getText().equals(this.getTxtName().getText())){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = txtName.getText().hashCode();
+        return result;
     }
 }

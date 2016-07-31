@@ -4,28 +4,34 @@
 
 
 
-    <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/radio_group_categoria"
-        android:layout_width="wrap_content"
+    <!--<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/radio_group_categoria"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_centerHorizontal="true">-->
+        <!--<RadioButton android:id="@+id/radio_trabalho"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/trabalho"/>-->
+        <!--<RadioButton android:id="@+id/radio_lazer"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/lazer" />-->
+    <!--</RadioGroup>-->
+
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true">
-        <RadioButton android:id="@+id/radio_trabalho"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trabalho"/>
-        <RadioButton android:id="@+id/radio_lazer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/lazer" />
-    </RadioGroup>
+        android:id="@+id/nomeAtividade"/>
+
 
     <LinearLayout
         android:id="@+id/ll_botoes_categorias"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/radio_group_categoria">
+        android:layout_below="@id/nomeAtividade">
 
         <LinearLayout
             android:orientation="vertical"
@@ -108,6 +114,7 @@
             android:text="Deletar"
             android:id="@+id/botao_deletar"
             android:layout_margin="20dp"
+            android:textColor="@android:color/white"
             android:backgroundTint="#b71c1c" />
 
         <Button
@@ -116,6 +123,7 @@
             android:text="Salvar"
             android:id="@+id/botao_salvar"
             android:layout_margin="20dp"
+            android:textColor="@android:color/white"
             android:backgroundTint="#2196f3" />
     </LinearLayout>
 

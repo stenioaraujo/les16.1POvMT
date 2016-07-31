@@ -17,6 +17,7 @@ import java.util.List;
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
+import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.AtividadeView;
 
 /**
@@ -25,6 +26,7 @@ import br.edu.ufcg.les.povmt.models.AtividadeView;
 public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecyclerAdapter.ViewHolder> {
     private List<AtividadeView> mDataset;
     private TabFragment1 owner;
+    private int position;
 
     public AtividadeRecyclerAdapter(List<AtividadeView> data, TabFragment1 owner) {
         mDataset = data;
@@ -51,12 +53,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
 
-        holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                owner.showEditDialog();
-            }
-        });
+
 
 
         switch (holder.currentTi.getPriorityId()) {
@@ -78,6 +75,12 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         holder.currentTi.getProgress().setLayoutParams(lp);
         holder.currentTi.getProgress().invalidate();
         holder.currentTi.getProgress().requestLayout();
+        holder.currentTi.getBtEdit().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                owner.showEditDialog(holder.currentTi, holder.currentTi.getPriorityId());
+            }
+        });
     }
 
     @Override
@@ -104,6 +107,8 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
 
         return -1;
     }
+
+
 
     public void add(AtividadeView item) {
         int pos = getPosAtividadeView(item.getTxtName().getText() + "");
@@ -166,6 +171,8 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         notifyDataSetChanged();
     }
 
+
+
     @Override
     public void onViewRecycled(ViewHolder holder) {
         super.onViewRecycled(holder);
@@ -185,6 +192,11 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         holder.currentTi.getProgress().requestLayout();
     }
 
+    @Override
+    public boolean onFailedToRecycleView(ViewHolder holder) {
+        return super.onFailedToRecycleView(holder);
+    }
+
     private void calcPercentage() {
         int totalMin = 0;
         for (AtividadeView ti : mDataset) {
@@ -197,5 +209,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
             ti.getTxtPercent().setText(ti.getPercent() + "");
         }
     }
+
+
 
 }
