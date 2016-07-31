@@ -102,6 +102,8 @@ public class DAO {
             String key = firebaseRef.child("atividades").push().getKey();
             atividades.put(key, atividade);
         }
+
+       // userData.setAtividades(atividades);
     }
 
     public void add(TimeInput ti) {
@@ -111,6 +113,24 @@ public class DAO {
             String key = firebaseRef.child("timeInputs").push().getKey();
             timeInputs.put(key, ti);
         }
+    }
+
+    public ArrayList<Atividade> getAllTasks(){
+        ArrayList<Atividade> listAllTasks = new ArrayList<Atividade>();
+        for(Atividade atv: userData.getAtividades().values()){
+            listAllTasks.add(atv);
+        }
+
+        return listAllTasks;
+    }
+
+    public ArrayList<TimeInput> getAllTimeInputs(){
+        ArrayList<TimeInput> listAllTimeInputs = new ArrayList<TimeInput>();
+        for(TimeInput ti: userData.getTimeInputs().values()){
+            listAllTimeInputs.add(ti);
+        }
+
+        return listAllTimeInputs;
     }
 
     public Atividade getAtividade(Atividade atv) {
@@ -192,7 +212,7 @@ public class DAO {
         List<Atividade> atividades = new ArrayList<>();
 
         for (Atividade atv: userData.getAtividades().values()) {
-            if (text == null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
+            if (text != null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
                 atividades.add(atv);
         }
 

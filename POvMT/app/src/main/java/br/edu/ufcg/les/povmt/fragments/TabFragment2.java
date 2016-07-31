@@ -27,9 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.datahandlers.DAO;
+import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.listviewitems.ChartItem;
 import br.edu.ufcg.les.povmt.listviewitems.PieChartItem;
+import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.DemoBase;
+import br.edu.ufcg.les.povmt.models.TimeInput;
 
 /**
  * Created by Isaque on 15-Jul-16.
@@ -39,6 +43,15 @@ public class TabFragment2 extends SimpleFragment {
 
     private PieChart mChart;
     private Typeface tf;
+    private DAO dao;
+
+    public TabFragment2() {
+        DBSPopulater dbs = new DBSPopulater();
+        dbs.populateBD();
+        this.dao = dao.getInstance();
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -100,9 +113,24 @@ public class TabFragment2 extends SimpleFragment {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
-        for (int i = 0; i < 4; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));
+        ArrayList<Atividade> listAllTasks = dao.getAllTasks();
+
+        ArrayList<TimeInput> listAllTimeInputs = dao.getAllTimeInputs();
+
+        for(int i = 0; i < listAllTasks.size();i++ ){
+            int timeTotal = 0;
+            for(int j = 0; j < listAllTimeInputs.size(); j++){
+                if(listAllTasks.get(i).getName().equals(listAllTimeInputs.get(j).getAtvPai().getName())){
+                    timeTotal += listAllTimeInputs.get(j).getTime();
+                }
+            }
+            entries.add(new PieEntry((float) timeTotal, listAllTasks.get(i).getName()));
+
         }
+
+        //for (int i = 0; i < listAllTimeInputs.size(); i++) {
+          //  entries.add(new PieEntry((float) ((listAllTimeInputs.get(i).getTime())), listAllTimeInputs.get(i).getAtvPai().getName()));
+        //}
 
         PieDataSet d = new PieDataSet(entries, "");
 
