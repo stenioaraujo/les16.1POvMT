@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.adapters.AtividadeRecyclerAdapter;
@@ -240,6 +239,5 @@ public class TabFragment1 extends Fragment {
         rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
 
     }
-
 
 }

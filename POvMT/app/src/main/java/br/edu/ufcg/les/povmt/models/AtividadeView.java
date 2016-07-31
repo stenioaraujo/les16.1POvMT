@@ -59,7 +59,7 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View root = inflater.inflate(R.layout.ti_recycler_item, this, true);
+        View root = inflater.inflate(R.layout.atividade_recycler_item, this, true);
 
         txtPercent = (TextView) root.findViewById(R.id.txt_percent);
         txtHour = (TextView) root.findViewById(R.id.txt_h);
