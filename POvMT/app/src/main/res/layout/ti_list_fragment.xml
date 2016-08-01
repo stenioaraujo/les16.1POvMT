@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/txt_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nome da Task"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/progressEditColor"
+        android:layout_alignBottom="@+id/btBack"
+        android:layout_toRightOf="@+id/btBack"
+        android:layout_toEndOf="@+id/btBack" />
+
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler"
+        android:layout_below="@+id/txt_name"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/frameLayout"
+        android:layout_marginTop="15dp"
+        android:background="@android:color/white"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/btBack"
+        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+        android:tint="@color/progressEditColor"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"/>
+
+
+</RelativeLayout>

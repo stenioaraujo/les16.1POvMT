@@ -48,7 +48,7 @@ public class TimeInputView extends RelativeLayout implements Comparable<TimeInpu
 
         txtHour = (TextView) root.findViewById(R.id.txt_h);
         txtMin = (TextView) root.findViewById(R.id.txt_min);
-        btDelete = root.findViewById(R.id.bt_edit);
+        btDelete = root.findViewById(R.id.bt_delete);
         txtTime = root.findViewById(R.id.txt_time);
 
     }

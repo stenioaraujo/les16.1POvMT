@@ -84,6 +84,7 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
         txtMin.setText(min);
         txtName.setText(atv.getName());
         priorityId = atv.getPriority();
+        this.timeInputs = timeInputs;
     }
 
     @Override
@@ -180,6 +181,14 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
 
     public void setAtividade(Atividade atividade) {
         this.atividade = atividade;
+    }
+
+    public List<TimeInput> getTimeInputs() {
+        return timeInputs;
+    }
+
+    public void setTimeInputs(List<TimeInput> timeInputs) {
+        this.timeInputs = timeInputs;
     }
 
     public int getTimeToMin(){

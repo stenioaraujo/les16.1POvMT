@@ -44,15 +44,13 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
     }
 
     @Override
-    public void onBindViewHolder(final AtividadeRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final AtividadeRecyclerAdapter.ViewHolder holder, final int position) {
         holder.currentTi.getTxtHour().setText(mDataset.get(position).getTxtHour().getText());
         holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
         holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
         holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
-
-
 
 
         switch (holder.currentTi.getPriorityId()) {
@@ -80,6 +78,13 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
                 owner.showEditDialog(holder.currentTi, holder.currentTi.getPriorityId());
             }
         });
+        holder.currentTi.getTxtName().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                owner.showTimestampDialog(mDataset.get(position));
+            }
+        });
+
     }
 
     @Override
@@ -106,7 +111,6 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
 
         return -1;
     }
-
 
 
     public void add(AtividadeView item) {
@@ -144,7 +148,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
                     owner.atualizarTempoInvestido(mDataset);
                     List<String> names = new ArrayList<String>();
                     for (AtividadeView av : mDataset) {
-                        names.add(av.getTxtName().getText()+"");
+                        names.add(av.getTxtName().getText() + "");
                     }
                     owner.updateAutoComplete(names);
                     update();
@@ -169,7 +173,6 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         notifyItemRemoved(position);
         notifyDataSetChanged();
     }
-
 
 
     @Override
@@ -208,7 +211,6 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
             ti.getTxtPercent().setText(ti.getPercent() + "");
         }
     }
-
 
 
 }

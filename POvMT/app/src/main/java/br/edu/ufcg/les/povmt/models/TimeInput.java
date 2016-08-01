@@ -73,4 +73,18 @@ public class TimeInput implements Comparable<TimeInput> {
         if(atvPai != null)
             this.atvPai = atvPai;
     }
+
+    public int getHour(){
+        int hour = (int) Math.floor(time/60d);
+
+        return hour;
+    }
+
+    public int getMin(){
+        double hourEmin = time/60d;
+        double hour = Math.floor(time/60d);
+        int min = (int) ((hourEmin-hour)*60d);
+
+        return min;
+    }
 }

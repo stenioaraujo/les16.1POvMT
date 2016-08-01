@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
+import br.edu.ufcg.les.povmt.activities.MainActivity;
 import br.edu.ufcg.les.povmt.adapters.AtividadeRecyclerAdapter;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -44,6 +45,7 @@ public class TabFragment1 extends Fragment {
     private TextView minuto;
     private AtividadeView atv;
     private int priority;
+    private FragmentManager fm;
 
 
     @Override
@@ -91,10 +93,27 @@ public class TabFragment1 extends Fragment {
         return rootView;
     }
 
-    public void showEditDialog(AtividadeView atividade, int priority){
+    public void showEditDialog(AtividadeView atividade, int priority) {
         this.atv = atividade;
         this.priority = priority;
         showEditDialog(1);
+    }
+
+    public void showTimestampDialog(AtividadeView atividade) {
+        fm = getActivity().getSupportFragmentManager();
+        TiListFragment frag = new TiListFragment();
+        frag.setAtividadeView(atividade);
+        frag.show(fm,"timestamp");
+        //fm.beginTransaction().add(R.id.container, frag).addToBackStack("timestamp").commit();
+
+//        editNameDialog.setTabFragment1(this);
+//        Bundle b = new Bundle();
+//        b.putInt("editando", edt);
+//        if(edt == 1){
+//            b.putString("nome", atv.getTxtName().getText()+"");
+//        }
+//        editNameDialog.setArguments(b);
+//        editNameDialog.show(fm, "editNameDialog");
     }
 
     public int getPriority() {
@@ -106,58 +125,57 @@ public class TabFragment1 extends Fragment {
     }
 
     public void showEditDialog(int edt) {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm = getActivity().getSupportFragmentManager();
         AtividadeFormularioDialog editNameDialog = new AtividadeFormularioDialog();
         editNameDialog.setTabFragment1(this);
         Bundle b = new Bundle();
         b.putInt("editando", edt);
-        if(edt == 1){
-            b.putString("nome", atv.getTxtName().getText()+"");
+        if (edt == 1) {
+            b.putString("nome", atv.getTxtName().getText() + "");
         }
         editNameDialog.setArguments(b);
         editNameDialog.show(fm, "editNameDialog");
     }
 
-    public void showFiltrarDialog(){
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+    public void showFiltrarDialog() {
+        fm = getActivity().getSupportFragmentManager();
         AtividadeFiltroDialog filtroDialog = new AtividadeFiltroDialog();
         filtroDialog.setTabFragment1(this);
         filtroDialog.show(fm, "filtroDialog");
     }
 
 
-
-    public void addTis(int priority , String nome ) {
-        if(atv == null){
-        AtividadeView ti = new AtividadeView(getContext());
-        String h = edtH.getText().toString();
-        String m = edtM.getText().toString();
-        if (h.equals("")) h = "0";
-        if (m.equals("")) m = "0";
-        ti.set(h, m, edtDesc.getText().toString(), priority);
-
-        Atividade atv = dao.getAtividade(ti.getTxtName().getText() + "");
+    public void addTis(int priority, String nome) {
         if (atv == null) {
-            atv = new Atividade();
-            atv.setName(ti.getTxtName().getText() + "");
-            atv.setPriority(ti.getPriorityId());
+            AtividadeView ti = new AtividadeView(getContext());
+            String h = edtH.getText().toString();
+            String m = edtM.getText().toString();
+            if (h.equals("")) h = "0";
+            if (m.equals("")) m = "0";
+            ti.set(h, m, edtDesc.getText().toString(), priority);
 
-        }
-        ti.setAtividade(atv);
+            Atividade atv = dao.getAtividade(ti.getTxtName().getText() + "");
+            if (atv == null) {
+                atv = new Atividade();
+                atv.setName(ti.getTxtName().getText() + "");
+                atv.setPriority(ti.getPriorityId());
 
-        Long hora = Long.parseLong(h);
-        Long min = Long.parseLong(m);
-        TimeInput timeInput = new TimeInput(hora*60 + min, atv);
+            }
+            ti.setAtividade(atv);
 
-        dao.add(atv);
-        dao.add(timeInput);
-        dao.update();
+            Long hora = Long.parseLong(h);
+            Long min = Long.parseLong(m);
+            TimeInput timeInput = new TimeInput(hora * 60 + min, atv);
 
-        mAdapter.add(ti);
-        edtDesc.setText("");
-        edtH.setText("");
-        edtM.setText("");
-        }else {
+            dao.add(atv);
+            dao.add(timeInput);
+            dao.update();
+
+            mAdapter.add(ti);
+            edtDesc.setText("");
+            edtH.setText("");
+            edtM.setText("");
+        } else {
             AtividadeView ti = new AtividadeView(getContext());
             Atividade antiga = dao.getAtividade(atv.getTxtName().getText() + "");
             String h = atv.getTxtHour().getText() + "";
@@ -186,9 +204,9 @@ public class TabFragment1 extends Fragment {
         }
     }
 
-    public void removeTis(){
-        if (atv.getAtividade() != null)dao.removeAtividade(atv.getAtividade());
-        else dao.removeAtividade(dao.getAtividade(atv.getTxtName().getText()+""));
+    public void removeTis() {
+        if (atv.getAtividade() != null) dao.removeAtividade(atv.getAtividade());
+        else dao.removeAtividade(dao.getAtividade(atv.getTxtName().getText() + ""));
 
         mAdapter.remove(atv);
         atv = null;
@@ -197,7 +215,7 @@ public class TabFragment1 extends Fragment {
     }
 
 
-    public void filtrar(String tipo){
+    public void filtrar(String tipo) {
         // TODO getAtividade by type
         Toast.makeText(getActivity(), tipo, Toast.LENGTH_SHORT).show();
 
@@ -211,8 +229,8 @@ public class TabFragment1 extends Fragment {
         return totalMin;
     }
 
-    public void atualizarTempoInvestido(List<AtividadeView> tis){
-        hora.setText(String.valueOf(calcMin(tis) /60));
+    public void atualizarTempoInvestido(List<AtividadeView> tis) {
+        hora.setText(String.valueOf(calcMin(tis) / 60));
         int minutos = calcMin(tis) % 60;
         minuto.setText(String.valueOf(minutos));
     }
@@ -233,8 +251,8 @@ public class TabFragment1 extends Fragment {
         this.atv = atv;
     }
 
-    public void updateAutoComplete(List<String> names){
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,names);
+    public void updateAutoComplete(List<String> names) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, names);
         edtDesc.setAdapter(adapter);
         rootView.findViewById(R.id.progressBar).setVisibility(View.GONE);
 
