@@ -131,9 +131,7 @@ public class TabFragment2 extends SimpleFragment {
     private PieData generateDataPie(Date inicio, Date fim) {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-
         ArrayList<Atividade> listAllTasks = dao.getAllTasks();
-
 //        ArrayList<TimeInput> listAllTimeInputs = dao.getAllTimeInputs();
 
         List<TimeInput> listTimesInInterval;
@@ -142,15 +140,10 @@ public class TabFragment2 extends SimpleFragment {
             int timeTotal = 0;
             listTimesInInterval = dao.getTimeInputs(inicio,fim, listAllTasks.get(i));
 
-
-//            Log.e("tamanho lista tis", Integer.toString(listAllTimeInputs.size()));
-            
-
             for(int j = 0; j < listTimesInInterval.size(); j++){
                 Log.e("data criacao ti", listTimesInInterval.get(j).getDataCriacao().toString());
 
                 if(listAllTasks.get(i).getName().equals(listTimesInInterval.get(j).getAtvPai().getName())){
-
                     timeTotal += listTimesInInterval.get(j).getTime();
                 }
             }
@@ -167,7 +160,7 @@ public class TabFragment2 extends SimpleFragment {
 
         // space between slices
         d.setSliceSpace(2f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setColors(ColorTemplate.MATERIAL_COLORS);
 
         PieData cd = new PieData(d);
         return cd;
