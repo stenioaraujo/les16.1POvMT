@@ -77,14 +77,15 @@ public class TabFragment2 extends SimpleFragment {
         final Date back21Days = dt.minusDays(21).toDate();
 
         // Semana Atual
-        list.add(new PieChartItem(generateDataPie(back7Days, new DateTime().toDate()), v.getContext()));
+        list.add(new PieChartItem("Semana Atual", "Ultimos 7 dias", generateDataPie(back7Days, new DateTime().toDate()), v.getContext()));
 
         // Semana Passada
-        list.add(new PieChartItem(generateDataPie(back14Days, back7Days), v.getContext()));
+        list.add(new PieChartItem("Semana Passada", "Entre 7 e 14 dias atrás", generateDataPie(back14Days, back7Days), v.getContext()));
 
         // Semana Retrasada
-        list.add(new PieChartItem(generateDataPie(back21Days, back14Days), v.getContext()));
+        list.add(new PieChartItem("Semana Retrasada", "Entre 14 e 21 dias atrás", generateDataPie(back21Days, back14Days), v.getContext()));
 
+        dao.update();
         //Set o adapter
         ChartDataAdapter cda = new ChartDataAdapter(v.getContext(), list);
         lv.setAdapter(cda);
