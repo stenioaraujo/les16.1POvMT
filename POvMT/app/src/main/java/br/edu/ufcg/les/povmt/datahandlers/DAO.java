@@ -112,6 +112,8 @@ public class DAO {
             String key = firebaseRef.child("atividades").push().getKey();
             atividades.put(key, atividade);
         }
+
+       // userData.setAtividades(atividades);
     }
 
     /**
@@ -144,6 +146,25 @@ public class DAO {
 
         return null;
     }
+
+    public ArrayList<Atividade> getAllTasks(){
+        ArrayList<Atividade> listAllTasks = new ArrayList<Atividade>();
+        for(Atividade atv: userData.getAtividades().values()){
+            listAllTasks.add(atv);
+        }
+
+        return listAllTasks;
+    }
+
+    public ArrayList<TimeInput> getAllTimeInputs(){
+        ArrayList<TimeInput> listAllTimeInputs = new ArrayList<TimeInput>();
+        for(TimeInput ti: userData.getTimeInputs().values()){
+            listAllTimeInputs.add(ti);
+        }
+
+        return listAllTimeInputs;
+    }
+
 
     /**
      * Recupera um objeto Atividade que tem atvNome como Nome
@@ -273,7 +294,7 @@ public class DAO {
         List<Atividade> atividades = new ArrayList<>();
 
         for (Atividade atv: userData.getAtividades().values()) {
-            if (text == null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
+            if (text != null || atv.getName().toLowerCase().startsWith(text.toLowerCase()))
                 atividades.add(atv);
         }
 

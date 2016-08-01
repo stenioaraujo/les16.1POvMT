@@ -1,6 +1,7 @@
 package br.edu.ufcg.les.povmt.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -40,6 +42,7 @@ import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
 import br.edu.ufcg.les.povmt.models.Atividade;
+import br.edu.ufcg.les.povmt.models.PieChart;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 import br.edu.ufcg.les.povmt.models.UserData;
 
@@ -144,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             this.dao = DAO.getInstance();
             dao.initialize();
 
-            //DBSPopulater.populateBD();
+            DBSPopulater.populateBD();
 
             setUserInfo();
         }
