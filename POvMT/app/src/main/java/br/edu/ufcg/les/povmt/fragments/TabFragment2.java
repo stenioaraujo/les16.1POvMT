@@ -1,6 +1,7 @@
 package br.edu.ufcg.les.povmt.fragments;
 
 import android.content.Context;
+import android.content.SyncStatusObserver;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,12 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.joda.time.DateTime;
+
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
@@ -63,11 +70,22 @@ public class TabFragment2 extends SimpleFragment {
 
         ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
-        // 30 items
-        for (int i = 0; i < 3; i++) {
-            list.add(new PieChartItem(generateDataPie(i + 1), v.getContext()));
-        }
 
+        DateTime dt = new DateTime();
+        final Date back7Days = dt.minusDays(7).toDate();
+        final Date back14Days = dt.minusDays(14).toDate();
+        final Date back21Days = dt.minusDays(21).toDate();
+
+        // Semana Atual
+        list.add(new PieChartItem(generateDataPie(back7Days, new DateTime().toDate()), v.getContext()));
+
+        // Semana Passada
+        list.add(new PieChartItem(generateDataPie(back14Days, back7Days), v.getContext()));
+
+        // Semana Retrasada
+        list.add(new PieChartItem(generateDataPie(back21Days, back14Days), v.getContext()));
+
+        //Set o adapter
         ChartDataAdapter cda = new ChartDataAdapter(v.getContext(), list);
         lv.setAdapter(cda);
         return v;
@@ -109,23 +127,35 @@ public class TabFragment2 extends SimpleFragment {
      *
      * @return
      */
-    private PieData generateDataPie(int cnt) {
+    private PieData generateDataPie(Date inicio, Date fim) {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
         ArrayList<Atividade> listAllTasks = dao.getAllTasks();
 
-        ArrayList<TimeInput> listAllTimeInputs = dao.getAllTimeInputs();
+//        ArrayList<TimeInput> listAllTimeInputs = dao.getAllTimeInputs();
+
+        List<TimeInput> listTimesInInterval;
 
         for(int i = 0; i < listAllTasks.size();i++ ){
             int timeTotal = 0;
-            for(int j = 0; j < listAllTimeInputs.size(); j++){
-                if(listAllTasks.get(i).getName().equals(listAllTimeInputs.get(j).getAtvPai().getName())){
-                    timeTotal += listAllTimeInputs.get(j).getTime();
+            listTimesInInterval = dao.getTimeInputs(inicio,fim, listAllTasks.get(i));
+
+
+//            Log.e("tamanho lista tis", Integer.toString(listAllTimeInputs.size()));
+            
+
+            for(int j = 0; j < listTimesInInterval.size(); j++){
+                Log.e("data criacao ti", listTimesInInterval.get(j).getDataCriacao().toString());
+
+                if(listAllTasks.get(i).getName().equals(listTimesInInterval.get(j).getAtvPai().getName())){
+
+                    timeTotal += listTimesInInterval.get(j).getTime();
                 }
             }
-            entries.add(new PieEntry((float) timeTotal, listAllTasks.get(i).getName()));
-
+            if (timeTotal != 0) {
+                entries.add(new PieEntry((float) timeTotal, listAllTasks.get(i).getName()));
+            }
         }
 
         //for (int i = 0; i < listAllTimeInputs.size(); i++) {

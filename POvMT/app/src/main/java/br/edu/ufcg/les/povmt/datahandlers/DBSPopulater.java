@@ -1,5 +1,10 @@
 package br.edu.ufcg.les.povmt.datahandlers;
 
+import org.joda.time.DateTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -34,25 +39,33 @@ public class DBSPopulater {
         task4.setName("Task4");
         task4.setPriority(2);
 
+
+
+        DateTime dt = new DateTime();
+
         TimeInput timeInput1  = new TimeInput(120, task1);
-        timeInput1.setDataCriacao(new Date(0));
+        timeInput1.setDataCriacao(dt.minusDays(7).toDate());
+
         TimeInput timeInput2  = new TimeInput(150, task1);
-        timeInput2.setDataCriacao(new Date(100));
+        timeInput2.setDataCriacao(dt.minusDays(3).toDate());
 
         TimeInput timeInput3  = new TimeInput(200, task2);
-        timeInput3.setDataCriacao(new Date(200));
+        timeInput3.setDataCriacao(dt.minusDays(5).toDate());
+
         TimeInput timeInput4  = new TimeInput(240, task2);
-        timeInput4.setDataCriacao(new Date(300));
+        timeInput4.setDataCriacao(dt.minusDays(7).toDate());
 
         TimeInput timeInput5  = new TimeInput(50, task3);
-        timeInput5.setDataCriacao(new Date(400));
+        timeInput5.setDataCriacao(dt.minusDays(14).toDate());
+
         TimeInput timeInput6  = new TimeInput(30, task3);
-        timeInput6.setDataCriacao(new Date(500));
+        timeInput6.setDataCriacao(dt.minusDays(16).toDate());
 
         TimeInput timeInput7  = new TimeInput(60, task4);
-        timeInput7.setDataCriacao(new Date(600));
+        timeInput7.setDataCriacao(dt.minusDays(10).toDate());
+
         TimeInput timeInput8  = new TimeInput(80, task4);
-        timeInput8.setDataCriacao(new Date(700));
+        timeInput8.setDataCriacao(dt.minusDays(20).toDate());
 
         dao.add(task1);
         dao.add(task2);

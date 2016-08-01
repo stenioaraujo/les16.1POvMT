@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             this.dao = DAO.getInstance();
             dao.initialize();
 
-            //DBSPopulater.populateBD();
+            DBSPopulater.populateBD();
 
             setUserInfo();
         }
