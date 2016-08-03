@@ -1,50 +1,49 @@
 package br.edu.ufcg.les.povmt.activities;
 
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
-import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
-import br.edu.ufcg.les.povmt.models.Atividade;
-import br.edu.ufcg.les.povmt.models.PieChart;
-import br.edu.ufcg.les.povmt.models.TimeInput;
 import br.edu.ufcg.les.povmt.models.UserData;
+import br.edu.ufcg.les.povmt.utilis.NotificationTrigger;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         View header = navigationView.getHeaderView(0);
         imageViewUser = (ImageView) header.findViewById(R.id.imageViewUser);
         textViewUsername = (TextView) header.findViewById(R.id.textViewUserName);
@@ -124,14 +122,44 @@ public class MainActivity extends AppCompatActivity
                 .build();
 
         verifyIfLoggedIn();
+
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.MY_PREFS_NAME, Context.MODE_PRIVATE);
+        if (Calendar.getInstance().get(Calendar.DAY_OF_MONTH) > prefs.getInt("lasttiday", 1)) {
+            SharedPreferences.Editor editor = getSharedPreferences(SettingsActivity.MY_PREFS_NAME, Context.MODE_PRIVATE).edit();
+            editor.putBoolean("hasyesterdayti", false);
+            editor.commit();
+        }
+
+     ;
     }
+
+
+    public void setNotification() {
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.MY_PREFS_NAME, Context.MODE_PRIVATE);
+        if (prefs.getBoolean("isnotficationon", true) && !prefs.getBoolean("hasyesterdayti", true)) {
+
+            Log.i("Notifications", "Notifications on");
+            AlarmManager alarmMgr = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent it = new Intent(this, NotificationTrigger.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, it, 0);
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR, dao.getNotificationHour());
+            cal.set(Calendar.MINUTE, dao.getNotificationMinute());
+            alarmMgr.setRepeating(AlarmManager.RTC, cal.getTimeInMillis(),86400000L, alarmIntent);
+
+            Log.i("Notifications", cal.getTime().toString());
+
+
+        }
+    }
+
 
     private void verifyIfLoggedIn() {
         //Initialize Firebase Auth
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        if(mFirebaseUser == null) {
+        if (mFirebaseUser == null) {
             // Not signed in, launch sign in activity
             startActivity(new Intent(this, SignInActivity.class));
             finish();
@@ -150,6 +178,8 @@ public class MainActivity extends AppCompatActivity
             //DBSPopulater.populateBD();
 
             setUserInfo();
+
+            //setNotification();
         }
     }
 

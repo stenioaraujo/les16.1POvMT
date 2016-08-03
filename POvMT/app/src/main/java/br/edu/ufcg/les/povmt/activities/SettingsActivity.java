@@ -3,6 +3,7 @@ package br.edu.ufcg.les.povmt.activities;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -39,37 +40,40 @@ import br.edu.ufcg.les.povmt.datahandlers.DAO;
  */
 public class SettingsActivity extends AppCompatActivity {
 
+    public static final String MY_PREFS_NAME = "settings";
     Button back;
     Switch notificacao;
     TextView textClockNotificacao;
     Context context = this;
     DAO dao;
     View dialog;
+    SharedPreferences.Editor editor;
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+
+        editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+
+
         dao = DAO.getInstance();
 
-        back = (Button) findViewById(R.id.back_button);
         notificacao = (Switch) findViewById(R.id.notificacaoSwitch);
         textClockNotificacao = (TextView) findViewById(R.id.textClockNotificacao);
 
-        notificacao.setChecked(dao.isNotificationOn());
+        notificacao.setChecked(prefs.getBoolean("isnotficationon", true));
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SettingsActivity.this, MainActivity.class));
-            }
-        });
 
         notificacao.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkVisibilidadeNotificacao();
+                editor.putBoolean("isnotficationon", isChecked);
+                editor.commit();
             }
         });
 
@@ -82,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
 
-                final TimePicker timePicker  = (TimePicker) dialog.findViewById(R.id.timePicker);
+                final TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.timePicker);
                 timePicker.setIs24HourView(true);
                 timePicker.setCurrentHour(dao.getNotificationHour());
                 timePicker.setCurrentMinute(dao.getNotificationMinute());
@@ -90,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity {
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(timePicker != null) {
+                        if (timePicker != null) {
                             dao.setNotificationTime(timePicker.getCurrentHour(), timePicker.getCurrentMinute());
                             dao.update();
 
@@ -106,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        checkVisibilidadeNotificacao();
+        //checkVisibilidadeNotificacao();
     }
 
     @Override
@@ -120,13 +124,13 @@ public class SettingsActivity extends AppCompatActivity {
         if (notificacao != null && notificacao.isChecked()) {
             textClockNotificacao.setVisibility(View.VISIBLE);
             textClockNotificacao.setText(String.format("%02d", dao.getNotificationHour()) + ":"
-            + String.format("%02d", dao.getNotificationMinute()));
+                    + String.format("%02d", dao.getNotificationMinute()));
         } else {
             textClockNotificacao.setVisibility(View.INVISIBLE);
         }
 
-        dao.setNotificationOn(notificacao.isChecked());
-        dao.update();
+        // dao.setNotificationOn(notificacao.isChecked());
+        // dao.update();
     }
 
     @Override

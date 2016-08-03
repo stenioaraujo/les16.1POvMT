@@ -151,6 +151,7 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
                         names.add(av.getTxtName().getText() + "");
                     }
                     owner.updateAutoComplete(names);
+
                     update();
 
                     Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());

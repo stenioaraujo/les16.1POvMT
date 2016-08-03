@@ -66,7 +66,7 @@ public class TiListFragment extends DialogFragment {
         dao = DAO.getInstance();
         // List<TimeInput> tis = dao.getTimeInputs(new Date(cal.getTimeInMillis()), new Date(cal2.getTimeInMillis()),atividadeView.getAtividade());
         List<TimeInput> tis = atividadeView.getTimeInputs();
-        System.out.println(tis.size());
+       // System.out.println(tis.size());
 //        System.out.println(new Date(cal.getTimeInMillis()));
 //        System.out.println(new Date(cal2.getTimeInMillis()));
         List<TimeInputView> tisViews = new ArrayList<>();
