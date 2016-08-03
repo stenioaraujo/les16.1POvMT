@@ -1,12 +1,11 @@
 package br.edu.ufcg.les.povmt.fragments;
 
+
 import android.content.Context;
-import android.content.SyncStatusObserver;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -14,12 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -27,10 +24,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.joda.time.DateTime;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import br.edu.ufcg.les.povmt.R;
@@ -39,23 +34,26 @@ import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.listviewitems.ChartItem;
 import br.edu.ufcg.les.povmt.listviewitems.PieChartItem;
 import br.edu.ufcg.les.povmt.models.Atividade;
-import br.edu.ufcg.les.povmt.models.DemoBase;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 
 /**
  * Created by Isaque on 15-Jul-16.
  */
-public class TabFragment2 extends SimpleFragment {
+public class TabFragment2 extends Fragment {
 
 
     private PieChart mChart;
     private Typeface tf;
     private DAO dao;
+    View v;
+    ListView lv;
+    ArrayList<ChartItem> list;
+    public ChartDataAdapter cda;
 
     public TabFragment2() {
-        DBSPopulater dbs = new DBSPopulater();
-        //dbs.populateBD();
-        this.dao = dao.getInstance();
+//        DBSPopulater dbs = new DBSPopulater();
+//        dbs.populateBD();
+//        this.dao = dao.getInstance();
 
     }
 
@@ -64,12 +62,23 @@ public class TabFragment2 extends SimpleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-        View v = inflater.inflate(R.layout.tab_fragment_2, container, false);
 
-        ListView lv = (ListView) v.findViewById(R.id.listViewCharts);
+        v = inflater.inflate(R.layout.tab_fragment_2, container, false);
+        lv = (ListView) v.findViewById(R.id.listViewCharts);
+        dao = dao.getInstance();
 
-        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+        generateGraphics();
 
+        return v;
+
+    }
+
+    public void updateGraphics(){
+        cda.notifyDataSetChanged();
+    }
+
+    public void generateGraphics(){
+        list = new ArrayList<ChartItem>();
 
         DateTime dt = new DateTime();
         final Date back7Days = dt.minusDays(7).toDate();
@@ -85,11 +94,8 @@ public class TabFragment2 extends SimpleFragment {
         // Semana Retrasada
         list.add(new PieChartItem("Semana Retrasada", "Entre 14 e 21 dias atrás", generateDataPie(back21Days, back14Days), v.getContext()));
 
-        //Set o adapter
-        ChartDataAdapter cda = new ChartDataAdapter(v.getContext(), list);
+        cda = new ChartDataAdapter(v.getContext(), list);
         lv.setAdapter(cda);
-        return v;
-
     }
 
     private SpannableString generateCenterText() {
@@ -120,6 +126,7 @@ public class TabFragment2 extends SimpleFragment {
         public int getViewTypeCount() {
             return 1; // we have 3 different item-types
         }
+
     }
 
     /**

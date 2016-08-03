@@ -1,7 +1,7 @@
 package br.edu.ufcg.les.povmt.models;
 
 /**
- * Created by Treinamento Xiaomi on 14/07/2016.
+ * Created by Isaque on 14/07/2016.
  */
 public class Prioridades {
     public static final int LOW = 0;

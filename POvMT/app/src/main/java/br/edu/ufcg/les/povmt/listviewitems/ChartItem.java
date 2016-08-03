@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 import com.github.mikephil.charting.data.ChartData;
 
 /**
- * Created by Treinamento-Xiaomi on 26/07/2016.
+ * Created by Isaque on 26/07/2016.
  */
 public abstract class ChartItem {
 

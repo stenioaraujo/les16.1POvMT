@@ -39,6 +39,7 @@ import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.datahandlers.DAO;
+import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.fragments.TabFragment1;
 import br.edu.ufcg.les.povmt.fragments.TabFragment2;
 import br.edu.ufcg.les.povmt.fragments.TabFragment3;
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             this.dao = DAO.getInstance();
             dao.initialize();
 
-            //DBSPopulater.populateBD();
+//            DBSPopulater.populateBD();
 
             setUserInfo();
 
