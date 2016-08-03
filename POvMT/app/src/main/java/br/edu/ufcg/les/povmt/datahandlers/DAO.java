@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -384,5 +385,26 @@ public class DAO {
                 ti.setAtvPai(atividade);
             }
         }
+    }
+
+    @Exclude
+    public void setNotificationTime(int hour, int minute) {
+        userData.setNotificationTime(hour, minute);
+    }
+
+    public int getNotificationHour() {
+        return userData.getNotificationHour();
+    }
+
+    public int getNotificationMinute() {
+        return userData.getNotificationMinute();
+    }
+
+    public boolean isNotificationOn() {
+        return userData.isNotificationOn();
+    }
+
+    public void setNotificationOn(boolean on) {
+        userData.setNotificationOn(on);
     }
 }

@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             this.dao = DAO.getInstance();
             dao.initialize();
 
-            DBSPopulater.populateBD();
+            //DBSPopulater.populateBD();
 
             setUserInfo();
         }
@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(this, SignInActivity.class));
                 return true;
             case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

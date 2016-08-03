@@ -20,6 +20,9 @@ public class UserData {
     private Map<String, TimeInput> timeInputs;
     private String nome;
     private String uid;
+    private int notificationHour;
+    private int notificationMinute;
+    private boolean notificationOn;
 
     private UserData() {}
 
@@ -51,5 +54,35 @@ public class UserData {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @Exclude
+    public void setNotificationTime(int hour, int minute) {
+        this.notificationHour = hour;
+        this.notificationMinute = minute;
+    }
+
+    public int getNotificationHour() {
+        return this.notificationHour;
+    }
+
+    public void setNotificationHour(int hour) {
+        this.notificationHour = hour;
+    }
+
+    public int getNotificationMinute() {
+        return this.notificationMinute;
+    }
+
+    public void setNotificationMinute(int minute) {
+        this.notificationMinute = minute;
+    }
+
+    public boolean isNotificationOn() {
+        return this.notificationOn;
+    }
+
+    public void setNotificationOn(boolean on) {
+        this.notificationOn = on;
     }
 }

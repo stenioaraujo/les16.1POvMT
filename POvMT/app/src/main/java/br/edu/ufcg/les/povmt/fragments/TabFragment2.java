@@ -54,7 +54,7 @@ public class TabFragment2 extends SimpleFragment {
 
     public TabFragment2() {
         DBSPopulater dbs = new DBSPopulater();
-        dbs.populateBD();
+        //dbs.populateBD();
         this.dao = dao.getInstance();
 
     }
@@ -85,7 +85,6 @@ public class TabFragment2 extends SimpleFragment {
         // Semana Retrasada
         list.add(new PieChartItem("Semana Retrasada", "Entre 14 e 21 dias atrás", generateDataPie(back21Days, back14Days), v.getContext()));
 
-        dao.update();
         //Set o adapter
         ChartDataAdapter cda = new ChartDataAdapter(v.getContext(), list);
         lv.setAdapter(cda);
