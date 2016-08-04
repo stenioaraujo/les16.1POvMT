@@ -56,6 +56,8 @@
 
         </LinearLayout>
 
+
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
@@ -101,11 +103,38 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/ll_imagem"
         android:layout_below="@+id/ll_botoes_categorias"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/image_dialog"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0037ff"
+            android:textColor="@android:color/white"
+            android:text="Capturar imagem"
+            android:id="@+id/capturar_foto_botao"
+            android:layout_gravity="center_horizontal" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_imagem"
         android:layout_centerHorizontal="true">
 
         <Button

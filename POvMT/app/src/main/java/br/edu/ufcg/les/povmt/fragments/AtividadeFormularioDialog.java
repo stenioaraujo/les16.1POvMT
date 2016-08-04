@@ -1,16 +1,29 @@
 package br.edu.ufcg.les.povmt.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.edu.ufcg.les.povmt.R;
 import br.edu.ufcg.les.povmt.models.Atividade;
@@ -26,10 +39,16 @@ public class AtividadeFormularioDialog  extends DialogFragment {
     private Button alta;
     private Button deletar;
     private Button salvar;
+    private Button capturar;
     private TabFragment1 tabFragment1;
     private int prioridade = 0;
     private boolean editando;
     private EditText nome;
+    String mCurrentPhotoPath;
+    private ImageView mImageView;
+    private Uri uri;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 2;
 
     private Bundle saved;
 
@@ -65,6 +84,8 @@ public class AtividadeFormularioDialog  extends DialogFragment {
         deletar =  (Button) view.findViewById(R.id.botao_deletar);
         salvar =  (Button) view.findViewById(R.id.botao_salvar);
         nome = (EditText) view.findViewById(R.id.nomeAtividade);
+        mImageView = (ImageView) view.findViewById(R.id.image_dialog);
+        capturar  = (Button) view.findViewById(R.id.capturar_foto_botao);
         if(!editando){
             deletar.setText("Cancelar");
             nome.setVisibility(View.GONE);
@@ -76,7 +97,12 @@ public class AtividadeFormularioDialog  extends DialogFragment {
 
         salvar.setOnClickListener(onBtClick);
         deletar.setOnClickListener(onBtClick);
-
+        capturar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
 
         baixa.setOnClickListener(onBtClicktipo);
         media.setOnClickListener(onBtClicktipo);
@@ -171,6 +197,59 @@ public class AtividadeFormularioDialog  extends DialogFragment {
         //setChecked(savedInstanceState);
     }
 
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(getContext(),
+                        "com.example.android.fileprovider",
+                        photoFile);
+                this.uri = photoURI;
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),this.uri );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mImageView.setImageBitmap(imageBitmap);
+        }
+    }
 
 
     public TabFragment1 getTabFragment1() {
