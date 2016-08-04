@@ -24,11 +24,11 @@ public class DBSPopulater {
         DAO dao = DAO.getInstance();
 
         Atividade task1 = new Atividade();
-        task1.setName("Task1");
+        task1.setName("Metodologia");
         task1.setPriority(1);
 
         Atividade task2 = new Atividade();
-        task2.setName("Task2");
+        task2.setName("LES");
         task2.setPriority(0);
 
         Atividade task3 = new Atividade();

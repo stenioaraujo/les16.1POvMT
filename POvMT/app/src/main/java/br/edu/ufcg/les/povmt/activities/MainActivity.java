@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Atividades"));
         tabLayout.addTab(tabLayout.newTab().setText("Histórico"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity
             this.dao = DAO.getInstance();
             dao.initialize();
 
-//            DBSPopulater.populateBD();
+            DBSPopulater.populateBD();
 
             setUserInfo();
 
