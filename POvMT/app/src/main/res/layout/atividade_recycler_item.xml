@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/bt_edit"
+        android:layout_toLeftOf="@+id/image_item"
         android:layout_toRightOf="@+id/linearLayout"
         android:layout_marginLeft="5dp">
 
@@ -123,7 +123,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bt_plus"
+        android:id="@+id/image_item"
         android:src="@drawable/ic_user_default"
         android:layout_gravity="right"
         android:layout_alignBottom="@+id/linearLayout"

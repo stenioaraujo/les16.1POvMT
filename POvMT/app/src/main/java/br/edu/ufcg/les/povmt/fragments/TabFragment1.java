@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -154,7 +155,7 @@ public class TabFragment1 extends Fragment {
     }
 
 
-    public void addTis(int priority, String nome) {
+    public void addTis(int priority, String nome, Uri uri) {
         if (atv == null) {
             AtividadeView ti = new AtividadeView(getContext());
             String h = edtH.getText().toString();
@@ -168,6 +169,7 @@ public class TabFragment1 extends Fragment {
                 atv = new Atividade();
                 atv.setName(ti.getTxtName().getText() + "");
                 atv.setPriority(ti.getPriorityId());
+                atv.setUri(uri.getPath());
 
             }
             ti.setAtividade(atv);

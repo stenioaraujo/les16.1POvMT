@@ -117,14 +117,28 @@
             android:layout_height="150dp"
             android:id="@+id/image_dialog"/>
 
-        <Button
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#0037ff"
-            android:textColor="@android:color/white"
-            android:text="Capturar imagem"
-            android:id="@+id/capturar_foto_botao"
-            android:layout_gravity="center_horizontal" />
+            android:layout_margin="10dp">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#0037ff"
+                android:textColor="@android:color/white"
+                android:text="Capturar imagem"
+                android:id="@+id/capturar_foto_botao"
+                android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#0037ff"
+                android:textColor="@android:color/white"
+                android:text="Imagem da galeria"
+                android:id="@+id/galeria_foto_botao"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
 
     </LinearLayout>

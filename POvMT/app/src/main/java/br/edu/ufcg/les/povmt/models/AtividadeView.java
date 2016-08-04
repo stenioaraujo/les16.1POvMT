@@ -1,10 +1,12 @@
 package br.edu.ufcg.les.povmt.models;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
     private int priorityId;
     private List<TimeInput> timeInputs;
     private Atividade atividade;
+    private ImageView myImage;
 
     public AtividadeView(Context context) {
         super(context, null);
@@ -68,6 +71,7 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
         progress = (FrameLayout) root.findViewById(R.id.progress);
         btEdit = root.findViewById(R.id.bt_edit);
         priority = (FrameLayout) root.findViewById(R.id.priority);
+        myImage = (ImageView) root.findViewById(R.id.image_item);
     }
 
     public void set( String hour, String min, String name, int priority) {
@@ -191,6 +195,14 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
         this.timeInputs = timeInputs;
     }
 
+    public ImageView getMyImage() {
+        return myImage;
+    }
+
+    public void setMyImage(ImageView myImage) {
+        this.myImage = myImage;
+    }
+
     public int getTimeToMin(){
         try {
             return Integer.parseInt(txtHour.getText() + "")*60 + Integer.parseInt(txtMin.getText() + "");
@@ -206,6 +218,8 @@ public class AtividadeView extends RelativeLayout implements Comparable<Atividad
         txtHour.setText(String.valueOf(hours));
         txtMin.setText(String.valueOf(min - hours*60));
     }
+
+
 
     @Override
     public int compareTo(AtividadeView another) {

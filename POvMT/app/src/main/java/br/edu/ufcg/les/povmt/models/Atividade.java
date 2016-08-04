@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Created by Isaque on 12-Jul-16.
@@ -15,7 +16,7 @@ public class Atividade {
     private String description;
     private int priority;
     private String tipoAtividade;
-    private Uri uri;
+    private String uri;
 
 
     public Atividade(){
@@ -62,11 +63,11 @@ public class Atividade {
         this.tipoAtividade = tipoAtividade;
     }
 
-    public Uri getUri() {
+    public String getUri() {
         return uri;
     }
 
-    public void setUri(Uri uri) {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 

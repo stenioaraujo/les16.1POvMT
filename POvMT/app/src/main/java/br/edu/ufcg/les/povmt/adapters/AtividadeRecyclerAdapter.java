@@ -1,5 +1,8 @@
 package br.edu.ufcg.les.povmt.adapters;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -49,8 +53,21 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
         holder.currentTi.getTxtMin().setText(mDataset.get(position).getTxtMin().getText());
         holder.currentTi.getTxtName().setText(mDataset.get(position).getTxtName().getText());
         holder.currentTi.getTxtPercent().setText(mDataset.get(position).getTxtPercent().getText());
+        holder.currentTi.setAtividade(mDataset.get(position).getAtividade());
+        if(holder.currentTi.getAtividade() != null){
+            Bitmap imageBitmap = null;
+            try {
+                Uri uri = Uri.parse(holder.currentTi.getAtividade().getUri() );
+                imageBitmap = MediaStore.Images.Media.getBitmap(owner.getActivity().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            holder.currentTi.getMyImage().setImageBitmap(imageBitmap);
+        }
+
         holder.currentTi.setPercent(mDataset.get(position).getPercent());
         holder.currentTi.setPriorityId(mDataset.get(position).getPriorityId());
+
 
 
         switch (holder.currentTi.getPriorityId()) {
@@ -135,6 +152,11 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
 
         calcPercentage();
         notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
     }
 
     public void addDBListener() {

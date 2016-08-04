@@ -40,6 +40,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
     private Button deletar;
     private Button salvar;
     private Button capturar;
+    private Button galeria;
     private TabFragment1 tabFragment1;
     private int prioridade = 0;
     private boolean editando;
@@ -49,6 +50,7 @@ public class AtividadeFormularioDialog  extends DialogFragment {
     private Uri uri;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_TAKE_PHOTO = 2;
+    private static final int SELECT_PICTURE = 3;
 
     private Bundle saved;
 
@@ -86,6 +88,8 @@ public class AtividadeFormularioDialog  extends DialogFragment {
         nome = (EditText) view.findViewById(R.id.nomeAtividade);
         mImageView = (ImageView) view.findViewById(R.id.image_dialog);
         capturar  = (Button) view.findViewById(R.id.capturar_foto_botao);
+        galeria = (Button) view.findViewById(R.id.galeria_foto_botao);
+
         if(!editando){
             deletar.setText("Cancelar");
             nome.setVisibility(View.GONE);
@@ -104,6 +108,13 @@ public class AtividadeFormularioDialog  extends DialogFragment {
             }
         });
 
+        galeria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchGalery();
+            }
+        });
+
         baixa.setOnClickListener(onBtClicktipo);
         media.setOnClickListener(onBtClicktipo);
         alta.setOnClickListener(onBtClicktipo);
@@ -113,12 +124,20 @@ public class AtividadeFormularioDialog  extends DialogFragment {
         return view;
     }
 
+    private void dispatchGalery(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent,
+                "Select Picture"), SELECT_PICTURE);
+    }
+
     private Button.OnClickListener onBtClick = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.botao_salvar:
-                    getTabFragment1().addTis(prioridade, nome.getText() + "");
+                    getTabFragment1().addTis(prioridade, nome.getText() + "", uri);
                     getDialog().dismiss();
                     break;
                 case R.id.botao_deletar:
@@ -241,6 +260,15 @@ public class AtividadeFormularioDialog  extends DialogFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
+            Bitmap imageBitmap = null;
+            try {
+                imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),this.uri );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mImageView.setImageBitmap(imageBitmap);
+        }else if (requestCode == SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+            this.uri = data.getData();
             Bitmap imageBitmap = null;
             try {
                 imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),this.uri );
