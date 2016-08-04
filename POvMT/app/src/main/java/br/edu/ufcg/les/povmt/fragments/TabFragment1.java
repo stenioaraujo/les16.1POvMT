@@ -169,7 +169,11 @@ public class TabFragment1 extends Fragment {
                 atv = new Atividade();
                 atv.setName(ti.getTxtName().getText() + "");
                 atv.setPriority(ti.getPriorityId());
-                atv.setUri(uri.getPath());
+                if (uri != null){
+                    atv.setUri(uri.getPath());
+                }else{
+                    atv.setUri("");
+                }
 
             }
             ti.setAtividade(atv);
