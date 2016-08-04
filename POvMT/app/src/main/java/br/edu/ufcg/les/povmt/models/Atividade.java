@@ -13,12 +13,14 @@ public class Atividade {
     private String description;
     private int priority;
     private String tipoAtividade;
+    private String imagePath;
 
     public Atividade(){
         this.name = "Lorem";
         this.description = "Ipsum";
         this.priority = Prioridades.MEDIUM;
         this.tipoAtividade = TipoAtividade.TRABALHO;
+
     }
 
 
@@ -64,5 +66,13 @@ public class Atividade {
 
         Atividade atv2 = (Atividade) o;
         return this.getName().equals(atv2.getName());
+    }
+
+    public String getImagePath() {
+        return this.imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

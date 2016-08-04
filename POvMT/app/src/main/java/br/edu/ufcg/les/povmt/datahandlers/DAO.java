@@ -1,8 +1,12 @@
 package br.edu.ufcg.les.povmt.datahandlers;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -11,7 +15,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -36,9 +44,11 @@ public class DAO {
     private String uid;
     private Set<ValueEventListener> listeners;
     private static DAO dao;
+    StorageReference storageReference;
 
     private DAO() {
         this.firebaseRef = FirebaseDatabase.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://les161povmt.appspot.com/");
 
         this.listeners = new HashSet<ValueEventListener>();
 
@@ -59,6 +69,7 @@ public class DAO {
 
         firebaseRef = FirebaseDatabase.getInstance().getReference();
         firebaseRef = firebaseRef.child("users").child(mFirebaseUser.getUid());
+        storageReference = storageReference.getRoot().child(mFirebaseUser.getUid());
 
         this.listeners = new HashSet<ValueEventListener>();
         listeners.add(addListenerFirebase());
@@ -406,5 +417,31 @@ public class DAO {
 
     public void setNotificationOn(boolean on) {
         userData.setNotificationOn(on);
+    }
+
+    public void setImagePath(Atividade atividade, Uri file) {
+        if (file != null && atividade != null) {
+            atividade.setImagePath(file.getPath());
+            storageReference.child(file.getLastPathSegment()).putFile(file); //Nao preciso da referencia do uplaod para nada ainda. So deixar fazendo o upload no background.
+        }
+    }
+
+    public void downloadImage(Atividade atividade, OnSuccessListener<FileDownloadTask.TaskSnapshot> listener) {
+        if (atividade != null && listener != null && atividade.getImagePath() != null) {
+            File image = new File(atividade.getImagePath());
+            Log.v("DOWNLOAD_IMAGE", "Baixada a imagem para a atividade! -" + atividade.getImagePath());
+            if (!image.exists()) {
+                Log.v("IMAGEM_NAO_EXISTE", "Imagem " + atividade.getImagePath() + " nao esta no dispositivo.");
+                storageReference.child(atividade.getImagePath()).getFile(image).addOnSuccessListener(listener)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("ERRO_DOWNLOAD_IMAGEM", e.getMessage());
+                        }
+                    });
+            } else {
+                Log.v("IMAGEM_EXISTE", "Imagem " + atividade.getImagePath() + " ja esta no dispositivo.");
+            }
+        }
     }
 }

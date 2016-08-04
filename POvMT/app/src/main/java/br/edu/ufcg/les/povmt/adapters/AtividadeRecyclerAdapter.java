@@ -5,9 +5,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,6 +151,14 @@ public class AtividadeRecyclerAdapter extends RecyclerView.Adapter<AtividadeRecy
                     List<String> names = new ArrayList<String>();
                     for (AtividadeView av : mDataset) {
                         names.add(av.getTxtName().getText() + "");
+
+                        dao.downloadImage(dao.getAtividade(av.getTxtName().getText()+""), new OnSuccessListener<FileDownloadTask.TaskSnapshot> () {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Log.v("DOWNLOAD_IMAGE", "Baixada a imagem para a atividade!");
+                                update();
+                            }
+                        });
                     }
                     owner.updateAutoComplete(names);
 

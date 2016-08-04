@@ -1,17 +1,14 @@
 package br.edu.ufcg.les.povmt.fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +32,6 @@ import br.edu.ufcg.les.povmt.datahandlers.DAO;
 import br.edu.ufcg.les.povmt.models.Atividade;
 import br.edu.ufcg.les.povmt.models.AtividadeView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
-import br.edu.ufcg.les.povmt.utilis.NotificationTrigger;
 
 /**
  * Created by Isaque on 15-Jul-16.
@@ -171,6 +168,7 @@ public class TabFragment1 extends Fragment {
 
             }
             ti.setAtividade(atv);
+            dao.setImagePath(atv, Uri.parse("android.resource://br.edu.ufcg.les.povmt/" + R.drawable.ic_notf));
 
             Long hora = Long.parseLong(h);
             Long min = Long.parseLong(m);
