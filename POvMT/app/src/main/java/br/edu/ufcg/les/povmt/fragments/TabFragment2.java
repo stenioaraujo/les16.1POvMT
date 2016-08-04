@@ -21,6 +21,9 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import org.joda.time.DateTime;
 
@@ -34,6 +37,7 @@ import br.edu.ufcg.les.povmt.datahandlers.DBSPopulater;
 import br.edu.ufcg.les.povmt.listviewitems.ChartItem;
 import br.edu.ufcg.les.povmt.listviewitems.PieChartItem;
 import br.edu.ufcg.les.povmt.models.Atividade;
+import br.edu.ufcg.les.povmt.models.AtividadeView;
 import br.edu.ufcg.les.povmt.models.TimeInput;
 
 /**
@@ -51,9 +55,7 @@ public class TabFragment2 extends Fragment {
     public ChartDataAdapter cda;
 
     public TabFragment2() {
-//        DBSPopulater dbs = new DBSPopulater();
-//        dbs.populateBD();
-//        this.dao = dao.getInstance();
+
 
     }
 
@@ -68,6 +70,7 @@ public class TabFragment2 extends Fragment {
         dao = dao.getInstance();
 
         generateGraphics();
+        cda.addDBListener();
 
         return v;
 
@@ -125,6 +128,27 @@ public class TabFragment2 extends Fragment {
         @Override
         public int getViewTypeCount() {
             return 1; // we have 3 different item-types
+        }
+
+        public void addDBListener() {
+            final DAO dao = DAO.getInstance();
+            dao.addListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //TODO essa parte aqui tem que pegar um limite de tempo, nao sei qual
+                    try {
+                        generateGraphics();
+
+                        Log.v("DB_UPDATED", "Adapter notificado, usuario atual " + dao.getUid());
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
     }
